@@ -26,6 +26,9 @@ namespace dom {
 	struct ElementData {
 		std::string tag_name;
 		AttrMap attributes;
+
+		ElementData() {}
+		ElementData(const std::string& tag_name, const AttrMap& attributes);
 	};
 
 	// Element node

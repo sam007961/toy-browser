@@ -148,10 +148,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="include\dom.hpp" />
+    <ClInclude Include="include\parser.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\dom.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\parser.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="test\test.html" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
