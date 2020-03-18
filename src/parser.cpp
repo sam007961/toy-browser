@@ -1,4 +1,3 @@
-#pragma once
 #include <assert.h>
 #include <parser.hpp>
 
