@@ -14,9 +14,12 @@ int main(int argc, char** argv) {
 	test.seekg(0, std::ios::end);
 	source.reserve(test.tellg());
 	test.seekg(0, std::ios::beg);
-
 	source.assign(std::istreambuf_iterator<char>(test),
 		std::istreambuf_iterator<char>());
+
+	std::cout << "test" << std::endl;
+	std::cout << source << std::endl;
+
 	Parser parser(source);
 	auto root = parser.parse();
 	return 0;
