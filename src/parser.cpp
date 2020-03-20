@@ -1,21 +1,21 @@
 #include <parser.hpp>
 #include <assert.h>
 
-Parser::Parser(const std::string& input) : input(input) {}
+ParserBase::ParserBase(const std::string& input) : input(input) {}
 
-char Parser::next_char() const {
+char ParserBase::next_char() const {
 	return input[pos];
 }
 
-bool Parser::starts_with(const std::string& str) const {
+bool ParserBase::starts_with(const std::string& str) const {
 	return input.substr(pos, str.length()) == str;
 }
 
-bool Parser::eof() const { return pos >= input.length(); }
+bool ParserBase::eof() const { return pos >= input.length(); }
 
-char Parser::consume_char() { return input[pos++]; }
+char ParserBase::consume_char() { return input[pos++]; }
 
-std::string Parser::consume_while(std::function<bool(char)> test) {
+std::string ParserBase::consume_while(std::function<bool(char)> test) {
 	std::string result;
 	while (!eof() && test(next_char())) {
 		result.push_back(consume_char());
@@ -23,6 +23,6 @@ std::string Parser::consume_while(std::function<bool(char)> test) {
 	return result;
 }
 
-void Parser::consume_whitespace() {
+void ParserBase::consume_whitespace() {
 	const auto _ = consume_while([](char c) -> bool { return c != ' '; });
 }

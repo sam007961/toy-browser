@@ -10,6 +10,8 @@ namespace dom {
 	struct Node {
 		// child nodes
 		std::vector<std::unique_ptr<Node>> children;
+		Node();
+		Node(std::vector<std::unique_ptr<Node>>& children);
 	};
 
 	// Text node

@@ -3,7 +3,7 @@
 #include <functional>
 #include <dom.hpp>
 
-class Parser {
+class ParserBase {
 protected:
 	char next_char() const;
 	bool starts_with(const std::string& str) const;
@@ -15,9 +15,16 @@ protected:
 
 
 public:
-	Parser(const std::string& input);
+	ParserBase(const std::string& input);
 
 private:
 	size_t pos;
 	const std::string input;
+};
+
+template<typename T>
+class Parser : public ParserBase {
+public:
+	Parser(const std::string& input) : ParserBase(input) {}
+	std::unique_ptr<T> parse() { return NULL; }
 };

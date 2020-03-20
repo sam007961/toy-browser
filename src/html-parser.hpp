@@ -1,8 +1,8 @@
 #pragma once
 #include <parser.hpp>
-#include<dom.hpp>
+#include <dom.hpp>
 
-class HtmlParser : public Parser {
+class HtmlParser : public Parser<dom::Node> {
 private:
 	typedef std::unique_ptr<dom::Node> Node;
 	typedef std::pair<std::string, std::string> Attribute;
