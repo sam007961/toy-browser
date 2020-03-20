@@ -1,5 +1,5 @@
 #include <dom.hpp>
-#include <parser.hpp>
+#include <html-parser.hpp>
 #include <iostream>
 #include <fstream>
 
@@ -20,7 +20,7 @@ int main(int argc, char** argv) {
 	std::cout << "test" << std::endl;
 	std::cout << source << std::endl;
 
-	Parser parser(source);
+	HtmlParser parser(source);
 	auto root = parser.parse();
 	return 0;
 }

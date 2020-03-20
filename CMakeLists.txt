@@ -6,6 +6,7 @@ set(Sources
     src/main.cpp
     src/dom.cpp
     src/parser.cpp
+    src/html-parser.cpp
 )
 
 add_executable(toy-browser ${Sources})
