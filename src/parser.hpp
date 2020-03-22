@@ -26,5 +26,5 @@ template<typename T>
 class Parser : public ParserBase {
 public:
 	Parser(const std::string& input) : ParserBase(input) {}
-	std::unique_ptr<T> parse() { return NULL; }
+	virtual std::unique_ptr<T> parse() = 0; 
 };
