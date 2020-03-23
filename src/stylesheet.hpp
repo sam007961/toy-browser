@@ -17,15 +17,19 @@ namespace css {
 
     typedef std::string Keyword;
     typedef std::pair<float, Unit> Length;
-
     typedef std::variant<Keyword, Length, Color> Value;
+    typedef std::tuple<int, int, int> Specificity;
 
-    class Selector {};
+    struct Selector {
+        virtual Specificity specificity() const = 0;
+    };
 
     struct SimpleSelector : public Selector {
         std::optional<std::string> tag_name;
         std::optional<std::string> id;
         std::vector<std::string> classes;
+
+        virtual Specificity specificity() const;
     };
 
     struct Declaration {
