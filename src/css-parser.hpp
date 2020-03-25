@@ -16,6 +16,8 @@ private:
     css::Rule parse_rule(); 
     SimpleSelector parse_simple_selector();
     css::Declaration parse_declaration();
+    std::string parse_identifier();
+    bool valid_identifier_char(char c);
 
 public:
     CssParser(const std::string& input);

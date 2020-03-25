@@ -38,13 +38,17 @@ namespace css {
     };
 
     struct Rule {
-        std::vector<std::reference_wrapper<Selector>> selectors;
+        std::vector<std::unique_ptr<Selector>> selectors;
         std::vector<Declaration> declarations;
+
+        Rule();
+        Rule(Rule&& rule);
+        Rule& operator=(Rule&& rule);
     };
 
     struct Stylesheet {
         std::vector<Rule> rules;
-        Stylesheet();
-        Stylesheet(const std::vector<Rule>& rules);
+        Stylesheet(std::vector<Rule>& rules);
+        Stylesheet(std::vector<Rule>&& rules);
     };
 }

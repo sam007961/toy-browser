@@ -31,8 +31,8 @@ std::vector<CssParser::Selector> CssParser::parse_selectors() {
         }
     }
     std::sort(selectors.begin(), selectors.end(), 
-        [](const css::Selector& a, const css::Selector& b) -> bool {
-            b.specificity() > a.specificity();
+        [](const auto& a, const auto& b) -> bool {
+            return b->specificity() > a->specificity();
     });
 
     return selectors;
@@ -41,11 +41,36 @@ std::vector<CssParser::Selector> CssParser::parse_selectors() {
 std::vector<css::Declaration> CssParser::parse_declarations() {
     assert(consume_char() == '{');
     std::vector<css::Declaration> declarations;
-    while(!eof()) {
-        
-    }
+
+    return declarations;
+}
+
+css::Rule CssParser::parse_rule() {
+    return css::Rule();
 }
 
 CssParser::SimpleSelector CssParser::parse_simple_selector() {
-    
+    SimpleSelector selector;
+    while(!eof()) {
+        char c = next_char();
+        if(c == '#') {
+            consume_char();
+            selector->id = parse_identifier();
+        } else if(c == '.') {
+            consume_char();
+            selector->classes.push_back(parse_identifier());
+        } else if(c == '*') {
+            consume_char();
+        } else if(valid_identifier_char(c)) {
+            selector->tag_name = parse_identifier();
+        } else break;
+    }
+
+    return selector;
 }
+
+std::string CssParser::parse_identifier() {
+    return "";
+}
+
+bool CssParser::valid_identifier_char(char c) { return true; }

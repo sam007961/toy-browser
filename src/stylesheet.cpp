@@ -1,7 +1,7 @@
 #include <stylesheet.hpp>
 
-css::Stylesheet::Stylesheet() {}
-css::Stylesheet::Stylesheet(const std::vector<Rule>& rules) : rules(rules) {}
+css::Stylesheet::Stylesheet(std::vector<Rule>& rules) : rules(std::move(rules)) {}
+css::Stylesheet::Stylesheet(std::vector<Rule>&& rules) : rules(std::move(rules)) {}
 
 css::Specificity css::SimpleSelector::specificity() const {
     int a = id ? id->length() : 0;
@@ -10,3 +10,7 @@ css::Specificity css::SimpleSelector::specificity() const {
 
     return { a, b, c };
 }
+
+css::Rule::Rule() {}
+css::Rule::Rule(Rule&& rule) : 
+    selectors(std::move(rule.selectors)), declarations(rule.declarations) {}
