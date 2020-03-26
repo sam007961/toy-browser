@@ -2,7 +2,7 @@
 #include <parser.hpp>
 #include <dom.hpp>
 
-class HtmlParser : public Parser<dom::Node> {
+class HtmlParser : public Parser<std::unique_ptr<dom::Node>> {
 private:
 	typedef std::unique_ptr<dom::Node> Node;
 	typedef std::pair<std::string, std::string> Attribute;

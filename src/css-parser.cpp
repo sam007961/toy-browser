@@ -3,8 +3,8 @@
 #include <assert.h>
 
 
-CssParser::Stylesheet CssParser::parse() {
-    return Stylesheet(new css::Stylesheet(parse_rules()));
+css::Stylesheet CssParser::parse() {
+    return css::Stylesheet(parse_rules());
 }
 
 std::vector<css::Rule> CssParser::parse_rules() {

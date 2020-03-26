@@ -4,7 +4,6 @@
 
 class CssParser : public Parser<css::Stylesheet> {
 private:
-    typedef std::unique_ptr<css::Stylesheet> Stylesheet;
     typedef std::unique_ptr<css::Selector> Selector;
     typedef std::unique_ptr<css::SimpleSelector> SimpleSelector;
 
@@ -21,5 +20,5 @@ private:
 
 public:
     CssParser(const std::string& input);
-    virtual Stylesheet parse();
+    virtual css::Stylesheet parse();
 };
