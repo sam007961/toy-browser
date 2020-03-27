@@ -20,7 +20,6 @@ int main(int argc, char** argv) {
 	std::cout << "test" << std::endl;
 	std::cout << source << std::endl;
 
-	HtmlParser parser(source);
-	auto root = parser.parse();
+	auto dom_root = HtmlParser(source).parse();
 	return 0;
 }

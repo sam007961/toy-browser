@@ -4,6 +4,8 @@
 #include <unordered_map>
 #include <string>
 
+class DomVisitor;
+
 namespace dom {
 
 	// Node base class
@@ -12,6 +14,8 @@ namespace dom {
 		std::vector<std::unique_ptr<Node>> children;
 		Node();
 		Node(std::vector<std::unique_ptr<Node>>& children);
+
+		virtual void accept(DomVisitor& visitor) = 0;
 	};
 
 	// Text node
@@ -19,6 +23,8 @@ namespace dom {
 		std::string text;
 		TextNode() {}
 		TextNode(const std::string& text);
+
+		virtual void accept(DomVisitor& visitor);
 	};
 
 	// Attribute map
@@ -39,5 +45,7 @@ namespace dom {
 		ElementNode() {}
 		ElementNode(const std::string& name, const AttrMap& attrs,
 			std::vector<std::unique_ptr<Node>>& children);
+
+		virtual void accept(DomVisitor& visitor);
 	};
 }

@@ -5,6 +5,8 @@
 #include <memory>
 #include <variant>
 
+class StylesheetVisitor;
+
 namespace css {
 
     enum Unit {
@@ -20,7 +22,11 @@ namespace css {
     typedef std::variant<Keyword, Length, Color> Value;
     typedef std::tuple<int, int, int> Specificity;
 
-    struct Selector {
+    struct StylesheetElement {
+        virtual void accept(StylesheetVisitor& visitor) = 0;
+    };
+
+    struct Selector : public StylesheetElement {
         virtual Specificity specificity() const = 0;
     };
 
@@ -30,25 +36,32 @@ namespace css {
         std::vector<std::string> classes;
 
         virtual Specificity specificity() const;
+        virtual void accept(StylesheetVisitor& visitor);
     };
 
-    struct Declaration {
+    struct Declaration : public StylesheetElement {
         std::string name;
         Value value;
+
+        virtual void accept(StylesheetVisitor& visitor);
     };
 
-    struct Rule {
+    struct Rule : StylesheetElement {
         std::vector<std::unique_ptr<Selector>> selectors;
         std::vector<Declaration> declarations;
 
         Rule();
         Rule(Rule&& rule);
         Rule& operator=(Rule&& rule);
+
+        virtual void accept(StylesheetVisitor& visitor);
     };
 
-    struct Stylesheet {
+    struct Stylesheet : StylesheetElement {
         std::vector<Rule> rules;
         Stylesheet(std::vector<Rule>& rules);
         Stylesheet(std::vector<Rule>&& rules);
+
+        virtual void accept(StylesheetVisitor& visitor);
     };
 }
