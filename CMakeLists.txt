@@ -11,6 +11,7 @@ set(Sources
     src/html-parser.cpp
     src/stylesheet.cpp
     src/css-parser.cpp
+    src/dom-printer.cpp
 )
 
 add_executable(toy-browser ${Sources})

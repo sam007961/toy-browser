@@ -1,3 +1,4 @@
+#pragma once
 #include <stylesheet.hpp>
 
 class StylesheetVisitor {

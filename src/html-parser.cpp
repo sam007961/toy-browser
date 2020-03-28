@@ -15,7 +15,7 @@ std::string HtmlParser::parse_tag_name() {
 }
 
 HtmlParser::Node HtmlParser::parse_node() {
-	switch (next_char()) {
+	switch(next_char()) {
 	case '<':
 		return parse_element();
 	default:

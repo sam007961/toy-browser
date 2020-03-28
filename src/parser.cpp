@@ -1,7 +1,7 @@
 #include <parser.hpp>
 #include <assert.h>
 
-ParserBase::ParserBase(const std::string& input) : input(input) {}
+ParserBase::ParserBase(const std::string& input) : input(input), pos(0) {}
 
 char ParserBase::next_char() const {
 	return input[pos];
@@ -24,5 +24,7 @@ std::string ParserBase::consume_while(std::function<bool(char)> test) {
 }
 
 void ParserBase::consume_whitespace() {
-	const auto _ = consume_while([](char c) -> bool { return c != ' '; });
+	const auto _ = consume_while([](char c) -> bool { 
+		return c == ' ' || c == '\n' || c == '\r' || c == '\t';
+	});
 }

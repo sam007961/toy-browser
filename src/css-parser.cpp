@@ -7,6 +7,8 @@ css::Stylesheet CssParser::parse() {
     return css::Stylesheet(parse_rules());
 }
 
+// TODO: use for loop like in html-parser
+
 std::vector<css::Rule> CssParser::parse_rules() {
     std::vector<css::Rule> rules;
     consume_whitespace();

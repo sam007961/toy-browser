@@ -2,6 +2,7 @@
 #include <html-parser.hpp>
 #include <iostream>
 #include <fstream>
+#include <dom-printer.hpp>
 
 int main(int argc, char** argv) {
 	/*auto tnode = std::unique_ptr<dom::TextNode>(new dom::TextNode("test"));
@@ -17,9 +18,9 @@ int main(int argc, char** argv) {
 	source.assign(std::istreambuf_iterator<char>(test),
 		std::istreambuf_iterator<char>());
 
-	std::cout << "test" << std::endl;
 	std::cout << source << std::endl;
 
 	auto dom_root = HtmlParser(source).parse();
+	std::cout << DomPrinter(*dom_root).print() << std::endl;
 	return 0;
 }
