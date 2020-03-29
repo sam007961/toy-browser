@@ -9,6 +9,7 @@ private:
 
 private:
     inline void add_space();
+    inline void add_separator(bool empty);
     inline void add_newline();
 
 public: 
