@@ -5,7 +5,6 @@
 class CssParser : public Parser<css::Stylesheet> {
 private:
     typedef std::unique_ptr<css::Selector> Selector;
-    typedef std::unique_ptr<css::SimpleSelector> SimpleSelector;
 
 private:
     std::vector<css::Rule> parse_rules();
@@ -13,10 +12,16 @@ private:
     std::vector<css::Declaration> parse_declarations();
 
     css::Rule parse_rule(); 
-    SimpleSelector parse_simple_selector();
+    Selector parse_simple_selector();
     css::Declaration parse_declaration();
     std::string parse_identifier();
-    bool valid_identifier_char(char c);
+    css::Value parse_value();
+    css::Length parse_length();
+    css::Color parse_color();
+    float parse_float();
+    css::Unit parse_unit();
+    unsigned char parse_hex_pair();
+    static bool valid_identifier_char(char c);
 
 public:
     CssParser(const std::string& input);

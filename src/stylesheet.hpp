@@ -43,14 +43,19 @@ namespace css {
         std::string name;
         Value value;
 
+        Declaration(std::string name, Value value);
         virtual void accept(StylesheetVisitor& visitor);
     };
 
     struct Rule : StylesheetElement {
-        std::vector<std::unique_ptr<Selector>> selectors;
+        typedef std::unique_ptr<Selector> SelectorPtr;
+
+        std::vector<SelectorPtr> selectors;
         std::vector<Declaration> declarations;
 
         Rule();
+        Rule(std::vector<SelectorPtr>&& selectors,
+            std::vector<Declaration> declarations);
         Rule(Rule&& rule);
         Rule& operator=(Rule&& rule);
 
@@ -59,7 +64,6 @@ namespace css {
 
     struct Stylesheet : StylesheetElement {
         std::vector<Rule> rules;
-        Stylesheet(std::vector<Rule>& rules);
         Stylesheet(std::vector<Rule>&& rules);
 
         virtual void accept(StylesheetVisitor& visitor);

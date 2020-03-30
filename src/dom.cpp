@@ -2,7 +2,7 @@
 #include <dom-visitor.hpp>
 
 dom::Node::Node() {}
-dom::Node::Node(std::vector<std::unique_ptr<Node>>& children) :
+dom::Node::Node(std::vector<std::unique_ptr<Node>>&& children) :
 	children(std::move(children)) {}
 
 dom::TextNode::TextNode(const std::string& text) : text(text) {}
@@ -12,5 +12,6 @@ dom::ElementData::ElementData(const std::string& tag_name, const AttrMap& attrib
 	: tag_name(tag_name), attributes(attributes) {}
 
 dom::ElementNode::ElementNode(const std::string& name, const AttrMap& attrs,
-	std::vector<std::unique_ptr<Node>>& children) : data(name, attrs), Node(children) {}	
+	std::vector<std::unique_ptr<Node>>&& children) :
+	data(name, attrs), Node(std::move(children)) {}	
 void dom::ElementNode::accept(DomVisitor& visitor) { visitor.visit(*this); }

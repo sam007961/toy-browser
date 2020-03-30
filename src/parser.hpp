@@ -10,6 +10,7 @@ protected:
 	bool eof() const;
 
 	char consume_char();
+	std::string consume_chars(int n);
 	std::string consume_while(std::function<bool(char)> test);
 	void consume_whitespace();
 

@@ -13,7 +13,7 @@ namespace dom {
 		// child nodes
 		std::vector<std::unique_ptr<Node>> children;
 		Node();
-		Node(std::vector<std::unique_ptr<Node>>& children);
+		Node(std::vector<std::unique_ptr<Node>>&& children);
 
 		virtual void accept(DomVisitor& visitor) = 0;
 	};
@@ -44,7 +44,7 @@ namespace dom {
 		ElementData data;
 		ElementNode() {}
 		ElementNode(const std::string& name, const AttrMap& attrs,
-			std::vector<std::unique_ptr<Node>>& children);
+			std::vector<std::unique_ptr<Node>>&& children);
 
 		virtual void accept(DomVisitor& visitor);
 	};

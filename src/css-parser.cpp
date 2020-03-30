@@ -7,31 +7,30 @@ css::Stylesheet CssParser::parse() {
     return css::Stylesheet(parse_rules());
 }
 
-// TODO: use for loop like in html-parser
-
 std::vector<css::Rule> CssParser::parse_rules() {
     std::vector<css::Rule> rules;
-    consume_whitespace();
-    while(!eof()) {
+    for(consume_whitespace(); !eof(); consume_whitespace()) {
         rules.push_back(parse_rule());
-        consume_whitespace();
     }
     return rules;
 }
 
 std::vector<CssParser::Selector> CssParser::parse_selectors() {
     std::vector<Selector> selectors;
-    while(next_char() != '{') {
+    while(!eof()) {
         selectors.push_back(parse_simple_selector());
         if(next_char() == ',') {
             consume_char();
             consume_whitespace();
+        } else if(next_char() == '{') {
+            break;   
         } else {
             std::cerr << "Unexpected character "
                 << next_char() << "in selector list" << std::endl;
             exit(1);
         }
     }
+
     std::sort(selectors.begin(), selectors.end(), 
         [](const auto& a, const auto& b) -> bool {
             return b->specificity() > a->specificity();
@@ -43,16 +42,19 @@ std::vector<CssParser::Selector> CssParser::parse_selectors() {
 std::vector<css::Declaration> CssParser::parse_declarations() {
     assert(consume_char() == '{');
     std::vector<css::Declaration> declarations;
-
+    for(consume_whitespace(); next_char() != '}'; consume_whitespace()) {
+        declarations.push_back(parse_declaration());
+    }
+    assert(consume_char() == '}');
     return declarations;
 }
 
 css::Rule CssParser::parse_rule() {
-    return css::Rule();
+    return css::Rule(parse_selectors(), parse_declarations());
 }
 
-CssParser::SimpleSelector CssParser::parse_simple_selector() {
-    SimpleSelector selector;
+CssParser::Selector CssParser::parse_simple_selector() {
+    auto selector = std::make_unique<css::SimpleSelector>();
     while(!eof()) {
         char c = next_char();
         if(c == '#') {
@@ -71,8 +73,63 @@ CssParser::SimpleSelector CssParser::parse_simple_selector() {
     return selector;
 }
 
-std::string CssParser::parse_identifier() {
-    return "";
+css::Declaration CssParser::parse_declaration() {
+    std::string property_name = parse_identifier();
+    consume_whitespace();
+    assert(consume_char() == ':');
+    consume_whitespace();
+    css::Value value = parse_value();
+    consume_whitespace();
+    assert(consume_char() == ';');
+
+    return css::Declaration(property_name, value);
 }
 
-bool CssParser::valid_identifier_char(char c) { return true; }
+std::string CssParser::parse_identifier() {
+    return consume_while(CssParser::valid_identifier_char);
+}
+
+css::Value CssParser::parse_value() {
+    char c = next_char();
+
+    if('0' <= c && c <= '9') {
+        return parse_length();
+    } else if(c == '#') {
+        return parse_color();
+    } else {
+        return parse_identifier();
+    }
+}
+
+css::Length CssParser::parse_length() {
+   return css::Length(parse_float(), parse_unit()); 
+}
+
+
+css::Color CssParser::parse_color() {
+    assert(consume_char() == '#');
+    return { parse_hex_pair(), parse_hex_pair(), parse_hex_pair(), 255 };
+}
+
+float CssParser::parse_float() {
+    return std::atof(consume_while([](char c) -> bool {
+        return '0' <= c && c <= '9' || c == '.';
+    }).c_str());
+}
+
+css::Unit CssParser::parse_unit() {
+    std::string unit = parse_identifier();
+    std::transform(unit.begin(), unit.end(), unit.begin(),
+        [](unsigned char c) { return std::tolower(c); }); // to lowercase
+    if(unit == "px") {
+        return css::Unit::Px;
+    } else {
+        std::cerr << "Unrecognized unit." << std::endl;
+        exit(1);
+    }
+}
+
+bool CssParser::valid_identifier_char(char c) {
+    return 'a' <= c && c <= 'z' || 'A' <= c && c <= 'Z' || '0' <= c && c <= '9'
+        || c == '-' || c == '_';
+}

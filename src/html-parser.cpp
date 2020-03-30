@@ -15,7 +15,7 @@ std::string HtmlParser::parse_tag_name() {
 }
 
 HtmlParser::Node HtmlParser::parse_node() {
-	switch(next_char()) {
+	switch (next_char()) {
 	case '<':
 		return parse_element();
 	default:
@@ -46,7 +46,7 @@ HtmlParser::Node HtmlParser::parse_element() {
 	assert(parse_tag_name() == tag_name);
 	assert(consume_char() == '>');
 
-	return Node(new dom::ElementNode(tag_name, attrs, children));
+	return Node(new dom::ElementNode(tag_name, attrs, std::move(children)));
 }
 
 HtmlParser::Attribute HtmlParser::parse_attr() {
@@ -68,7 +68,7 @@ std::string HtmlParser::parse_attr_value() {
 
 dom::AttrMap HtmlParser::parse_attributes() {
 	dom::AttrMap attributes;
-	for (consume_whitespace(); next_char() != '>'; consume_whitespace()) {
+	for(consume_whitespace(); next_char() != '>'; consume_whitespace()) {
 		attributes.insert(parse_attr());
 	}
 	return attributes;
@@ -76,7 +76,7 @@ dom::AttrMap HtmlParser::parse_attributes() {
 
 std::vector<HtmlParser::Node> HtmlParser::parse_nodes() {
 	std::vector<Node> nodes;
-	for (consume_whitespace(); !eof() && !starts_with("</"); consume_whitespace()) {
+	for(consume_whitespace(); !eof() && !starts_with("</"); consume_whitespace()) {
 		nodes.push_back(parse_node());
 	}
 	return nodes;
@@ -88,6 +88,6 @@ HtmlParser::Node HtmlParser::parse() {
 	if (nodes.size() == 1) {
 		return std::move(nodes.back());
 	} else {
-		return Node(new dom::ElementNode("html", dom::AttrMap(), nodes));
+		return Node(new dom::ElementNode("html", dom::AttrMap(), std::move(nodes)));
 	}
 }

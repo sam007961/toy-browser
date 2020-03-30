@@ -15,6 +15,10 @@ bool ParserBase::eof() const { return pos >= input.length(); }
 
 char ParserBase::consume_char() { return input[pos++]; }
 
+std::string ParserBase::consume_chars(int n) {
+	return input.substr(pos, pos += n);
+}
+
 std::string ParserBase::consume_while(std::function<bool(char)> test) {
 	std::string result;
 	while (!eof() && test(next_char())) {
