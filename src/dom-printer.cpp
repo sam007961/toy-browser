@@ -32,7 +32,8 @@ inline void DomPrinter::add_newline() {
 }
 
 std::string&& DomPrinter::print() {
-    // nodes are tagged based on whether they are the last child node or the last node in a layer
+    // nodes are tagged based on whether they are the last child node
+    // or the last node in a layer
     enum Tag { NONE, SEPARATOR, LAYER };
 
     // BFS on DOM
@@ -52,7 +53,8 @@ std::string&& DomPrinter::print() {
                 }
                 nodes.back().first = SEPARATOR; // tag last child
             } else {
-                // nullptr indicates that the node has no children to insert empty separator on the next layer
+                // nullptr indicates that the node has no children to
+                // insert empty separator on the next layer
                 nodes.push({ SEPARATOR, nullptr });
             }
         }
@@ -61,6 +63,7 @@ std::string&& DomPrinter::print() {
             add_separator(!node);
         } else if (tag == LAYER) {
             add_newline();
+            // tag the last node of the layer below
             nodes.back().first = LAYER;
         } else {
             add_space();
