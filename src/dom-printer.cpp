@@ -1,4 +1,5 @@
 #include <dom-printer.hpp>
+#include <sstream>
 #include <queue>
 
 DomPrinter::DomPrinter(dom::Node& root) : root(root) {}
@@ -39,6 +40,7 @@ std::string&& DomPrinter::print() {
     // BFS on DOM
     std::queue<std::pair<Tag, dom::Node*>> nodes;
     nodes.push({ LAYER, &root });
+    bool empty_layer = false;
 
     while(!nodes.empty()) {
 
@@ -46,6 +48,7 @@ std::string&& DomPrinter::print() {
         nodes.pop();
 
         if(node) { // check if empty separator
+            empty_layer = false; // indicate that next layer is not empty
             node->accept(*this);
             if(node->children.size()) {
                 for(auto& child : node->children) {
@@ -62,13 +65,13 @@ std::string&& DomPrinter::print() {
         if(tag == SEPARATOR) {
             add_separator(!node);
         } else if (tag == LAYER) {
+            if(empty_layer) break;
+            empty_layer = true;
             add_newline();
-            // tag the last node of the layer below
-            nodes.back().first = LAYER;
+            nodes.back().first = LAYER; // tag the last node of the layer below
         } else {
             add_space();
         }
-
     }
 
     return std::move(output);

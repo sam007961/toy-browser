@@ -129,6 +129,12 @@ css::Unit CssParser::parse_unit() {
     }
 }
 
+unsigned char CssParser::parse_hex_pair() {
+    std::string hex = consume_chars(2);
+    return std::stoul(hex, nullptr, 16);
+    
+}
+
 bool CssParser::valid_identifier_char(char c) {
     return 'a' <= c && c <= 'z' || 'A' <= c && c <= 'Z' || '0' <= c && c <= '9'
         || c == '-' || c == '_';

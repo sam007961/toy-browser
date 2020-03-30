@@ -24,11 +24,10 @@ HtmlParser::Node HtmlParser::parse_node() {
 }
 
 HtmlParser::Node HtmlParser::parse_text() {
-	return Node(new dom::TextNode(consume_while(
+	return std::make_unique<dom::TextNode>(consume_while(
 		[](char c) -> bool {return c != '<';}
-	)));
+	));
 }
-
 
 HtmlParser::Node HtmlParser::parse_element() {
 	// Opening tag
@@ -46,7 +45,7 @@ HtmlParser::Node HtmlParser::parse_element() {
 	assert(parse_tag_name() == tag_name);
 	assert(consume_char() == '>');
 
-	return Node(new dom::ElementNode(tag_name, attrs, std::move(children)));
+	return std::make_unique<dom::ElementNode>(tag_name, attrs, std::move(children));
 }
 
 HtmlParser::Attribute HtmlParser::parse_attr() {
@@ -83,11 +82,11 @@ std::vector<HtmlParser::Node> HtmlParser::parse_nodes() {
 }
 
 
-HtmlParser::Node HtmlParser::parse() {
+std::unique_ptr<dom::Node> HtmlParser::parse() {
 	auto nodes = parse_nodes();
 	if (nodes.size() == 1) {
 		return std::move(nodes.back());
 	} else {
-		return Node(new dom::ElementNode("html", dom::AttrMap(), std::move(nodes)));
+		return std::make_unique<dom::ElementNode>("html", dom::AttrMap(), std::move(nodes));
 	}
 }

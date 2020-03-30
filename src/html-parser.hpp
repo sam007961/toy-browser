@@ -19,5 +19,5 @@ private:
 
 public:
 	HtmlParser(const std::string& input);
-	virtual Node parse();
+	virtual std::unique_ptr<dom::Node> parse();
 };

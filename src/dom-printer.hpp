@@ -1,6 +1,5 @@
 #pragma once
 #include <dom-visitor.hpp>
-#include <sstream>
 
 class DomPrinter : public DomVisitor {
 private:
@@ -10,6 +9,7 @@ private:
 private:
     inline void add_space();
     inline void add_separator(bool empty);
+    inline void add_empty_separator();
     inline void add_newline();
 
 public: 
