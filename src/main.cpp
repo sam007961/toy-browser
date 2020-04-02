@@ -1,7 +1,6 @@
-#include <dom.hpp>
-#include <html-parser.hpp>
 #include <iostream>
 #include <fstream>
+#include <html-parser.hpp>
 #include <dom-printer.hpp>
 
 int main(int argc, char** argv) {

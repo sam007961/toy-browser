@@ -3,7 +3,7 @@
 #include <functional>
 #include <dom.hpp>
 
-class ParserBase {
+class Tokenizer {
 protected:
 	char next_char() const;
 	bool starts_with(const std::string& str) const;
@@ -14,9 +14,8 @@ protected:
 	std::string consume_while(std::function<bool(char)> test);
 	void consume_whitespace();
 
-
 public:
-	ParserBase(const std::string& input);
+	Tokenizer(const std::string& input);
 
 private:
 	size_t pos;
@@ -24,8 +23,8 @@ private:
 };
 
 template<typename T>
-class Parser : public ParserBase {
+class Parser : public Tokenizer {
 public:
-	Parser(const std::string& input) : ParserBase(input) {}
+	Parser(const std::string& input) : Tokenizer(input) {}
 	virtual T parse() = 0; 
 };

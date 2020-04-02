@@ -2,7 +2,6 @@
 #include <iostream>
 #include <assert.h>
 
-
 css::Stylesheet CssParser::parse() {
     return css::Stylesheet(parse_rules());
 }
@@ -92,11 +91,11 @@ std::string CssParser::parse_identifier() {
 css::Value CssParser::parse_value() {
     char c = next_char();
 
-    if('0' <= c && c <= '9') {
+    if('0' <= c && c <= '9') { // Length
         return parse_length();
-    } else if(c == '#') {
+    } else if(c == '#') {      // Color
         return parse_color();
-    } else {
+    } else {                   // Keyword
         return parse_identifier();
     }
 }
@@ -132,7 +131,6 @@ css::Unit CssParser::parse_unit() {
 unsigned char CssParser::parse_hex_pair() {
     std::string hex = consume_chars(2);
     return std::stoul(hex, nullptr, 16);
-    
 }
 
 bool CssParser::valid_identifier_char(char c) {
