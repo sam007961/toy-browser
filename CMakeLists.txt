@@ -4,6 +4,8 @@ project(toy-browser VERSION 0.1.0)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+enable_testing()
+
 set(Sources
     src/main.cpp
     src/dom.cpp
@@ -46,7 +48,11 @@ if (CMAKE_VERSION VERSION_LESS 2.8.11)
   include_directories("${gtest_SOURCE_DIR}/include")
 endif()
 
+
 add_executable(toy-browser ${Sources})
-target_link_libraries(toy-browser gtest_main)
-target_include_directories(toy-browser PRIVATE ${PROJECT_SOURCE_DIR}/src)
+add_library(toy-browser-lib STATIC ${Sources})
+target_link_libraries(toy-browser)
+include_directories(toy-browser PUBLIC ${PROJECT_SOURCE_DIR}/src)
 configure_file(test/test.html test/test.html COPYONLY)
+
+add_subdirectory(test)
