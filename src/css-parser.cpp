@@ -2,6 +2,8 @@
 #include <iostream>
 #include <assert.h>
 
+CssParser::CssParser(const std::string& input) : Parser(input) {}
+
 css::Stylesheet CssParser::parse() {
     return css::Stylesheet(parse_rules());
 }
@@ -18,14 +20,15 @@ std::vector<CssParser::Selector> CssParser::parse_selectors() {
     std::vector<Selector> selectors;
     while(!eof()) {
         selectors.push_back(parse_simple_selector());
+        consume_whitespace();
         if(next_char() == ',') {
             consume_char();
             consume_whitespace();
         } else if(next_char() == '{') {
             break;   
         } else {
-            std::cerr << "Unexpected character "
-                << next_char() << "in selector list" << std::endl;
+            std::cerr << "Unexpected character: \'"
+                << next_char() << "\' in selector list" << std::endl;
             exit(1);
         }
     }
@@ -49,7 +52,9 @@ std::vector<css::Declaration> CssParser::parse_declarations() {
 }
 
 css::Rule CssParser::parse_rule() {
-    return css::Rule(parse_selectors(), parse_declarations());
+    auto selectors = parse_selectors();
+    auto declarations = parse_declarations();
+    return css::Rule(std::move(selectors), declarations);
 }
 
 CssParser::Selector CssParser::parse_simple_selector() {
@@ -101,13 +106,18 @@ css::Value CssParser::parse_value() {
 }
 
 css::Length CssParser::parse_length() {
-   return css::Length(parse_float(), parse_unit()); 
+    float value = parse_float();
+    css::Unit unit = parse_unit();
+    return css::Length(value, unit); 
 }
 
 
 css::Color CssParser::parse_color() {
     assert(consume_char() == '#');
-    return { parse_hex_pair(), parse_hex_pair(), parse_hex_pair(), 255 };
+    unsigned char r = parse_hex_pair();
+    unsigned char g = parse_hex_pair();
+    unsigned char b = parse_hex_pair();
+    return { r, g, b, 255 };
 }
 
 float CssParser::parse_float() {
@@ -123,7 +133,7 @@ css::Unit CssParser::parse_unit() {
     if(unit == "px") {
         return css::Unit::Px;
     } else {
-        std::cerr << "Unrecognized unit." << std::endl;
+        std::cerr << "Unrecognized unit: \'" << unit << "\'." << std::endl;
         exit(1);
     }
 }

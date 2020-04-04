@@ -16,6 +16,9 @@ namespace dom {
 		Node(std::vector<std::unique_ptr<Node>>&& children);
 
 		virtual void accept(DomVisitor& visitor) = 0;
+		virtual bool isEqual(const Node& other) const = 0;
+
+		bool operator==(const Node& other) const;
 	};
 
 	// Text node
@@ -25,6 +28,7 @@ namespace dom {
 		TextNode(const std::string& text);
 
 		virtual void accept(DomVisitor& visitor);
+		virtual bool isEqual(const Node& other) const;
 	};
 
 	// Attribute map
@@ -37,6 +41,7 @@ namespace dom {
 
 		ElementData() {}
 		ElementData(const std::string& tag_name, const AttrMap& attributes);
+		bool operator==(const ElementData& other) const;
 	};
 
 	// Element node
@@ -47,5 +52,6 @@ namespace dom {
 			std::vector<std::unique_ptr<Node>>&& children);
 
 		virtual void accept(DomVisitor& visitor);
+		virtual bool isEqual(const Node& other) const;
 	};
 }

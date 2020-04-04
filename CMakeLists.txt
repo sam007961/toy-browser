@@ -14,6 +14,7 @@ set(Sources
     src/stylesheet.cpp
     src/css-parser.cpp
     src/dom-printer.cpp
+    src/dom-comparator.cpp
 )
 
 # Download and unpack googletest at configure time
@@ -53,6 +54,6 @@ add_executable(toy-browser ${Sources})
 add_library(toy-browser-lib STATIC ${Sources})
 target_link_libraries(toy-browser)
 include_directories(toy-browser PUBLIC ${PROJECT_SOURCE_DIR}/src)
-configure_file(test/test.html test/test.html COPYONLY)
+configure_file(resources/test.html resources/test.html COPYONLY)
 
 add_subdirectory(test)
