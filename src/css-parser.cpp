@@ -1,4 +1,5 @@
 #include <css-parser.hpp>
+#include <algorithm>
 #include <iostream>
 #include <assert.h>
 
