@@ -16,7 +16,7 @@ bool Tokenizer::eof() const { return pos >= input.length(); }
 char Tokenizer::consume_char() { return input[pos++]; }
 
 std::string Tokenizer::consume_chars(int n) {
-	std::string result = input.substr(pos, 2);
+	std::string result = input.substr(pos, n);
 	pos += n;
 	return result;
 }

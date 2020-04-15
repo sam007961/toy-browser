@@ -4,7 +4,7 @@
 #include <dom.hpp>
 
 class Tokenizer {
-protected:
+public:
 	char next_char() const;
 	bool starts_with(const std::string& str) const;
 	bool eof() const;
@@ -14,7 +14,6 @@ protected:
 	std::string consume_while(std::function<bool(char)> test);
 	void consume_whitespace();
 
-public:
 	Tokenizer(const std::string& input);
 
 private:
@@ -23,7 +22,7 @@ private:
 };
 
 template<typename T>
-class Parser : public Tokenizer {
+class Parser : protected Tokenizer {
 public:
 	Parser(const std::string& input) : Tokenizer(input) {}
 	virtual T parse() = 0; 

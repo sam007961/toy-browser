@@ -15,6 +15,8 @@ namespace css {
 
     struct Color {
         unsigned char r, g, b, a;
+
+        bool operator==(const Color& other) const;
     };
 
     typedef std::string Keyword;
@@ -28,6 +30,9 @@ namespace css {
 
     struct Selector : public StylesheetElement {
         virtual Specificity specificity() const = 0;
+        virtual bool isEqual(const Selector& other) const = 0;
+        bool operator==(const Selector& other) const;
+        bool operator!=(const Selector& other) const;
     };
 
     struct SimpleSelector : public Selector {
@@ -37,6 +42,7 @@ namespace css {
 
         virtual Specificity specificity() const;
         virtual void accept(StylesheetVisitor& visitor);
+        virtual bool isEqual(const Selector& other) const;
     };
 
     struct Declaration : public StylesheetElement {
@@ -45,6 +51,8 @@ namespace css {
 
         Declaration(std::string name, Value value);
         virtual void accept(StylesheetVisitor& visitor);
+        bool operator==(const Declaration& other) const;
+        bool operator!=(const Declaration& other) const;
     };
 
     struct Rule : StylesheetElement {
@@ -60,6 +68,8 @@ namespace css {
         Rule& operator=(Rule&& rule);
 
         virtual void accept(StylesheetVisitor& visitor);
+        bool operator==(const Rule& other) const;
+        bool operator!=(const Rule& other) const;
     };
 
     struct Stylesheet : StylesheetElement {
@@ -67,5 +77,6 @@ namespace css {
         Stylesheet(std::vector<Rule>&& rules);
 
         virtual void accept(StylesheetVisitor& visitor);
+        bool operator==(const Stylesheet& other) const;
     };
 }

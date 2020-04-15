@@ -1,7 +1,10 @@
 set(Sources
     main.cpp
     tokenizer-test.cpp
+    dom-comparison-test.cpp
+    stylesheet-comparison-test.cpp
     html-parser-test.cpp
+    css-parser-test.cpp
 )
 
 add_executable(toy-browser-test ${Sources})

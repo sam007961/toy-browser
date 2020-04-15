@@ -19,13 +19,15 @@ namespace dom {
 		virtual bool isEqual(const Node& other) const = 0;
 
 		bool operator==(const Node& other) const;
+		bool operator!=(const Node& other) const;
 	};
 
 	// Text node
 	struct TextNode : Node {
 		std::string text;
 		TextNode() {}
-		TextNode(const std::string& text);
+		TextNode(const std::string& text,
+			std::vector<std::unique_ptr<Node>>&& children = {});
 
 		virtual void accept(DomVisitor& visitor);
 		virtual bool isEqual(const Node& other) const;
@@ -48,10 +50,13 @@ namespace dom {
 	struct ElementNode : Node {
 		ElementData data;
 		ElementNode() {}
-		ElementNode(const std::string& name, const AttrMap& attrs,
-			std::vector<std::unique_ptr<Node>>&& children);
+		ElementNode(const std::string& name, const AttrMap& attrs = {},
+			std::vector<std::unique_ptr<Node>>&& children = {});
 
 		virtual void accept(DomVisitor& visitor);
 		virtual bool isEqual(const Node& other) const;
 	};
+
+	// compare two trees or sub-trees
+	bool compare(const Node& a, const Node& b);
 }

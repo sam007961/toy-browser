@@ -14,7 +14,6 @@ set(Sources
     src/stylesheet.cpp
     src/css-parser.cpp
     src/dom-printer.cpp
-    src/dom-comparator.cpp
 )
 
 # Download and unpack googletest at configure time
