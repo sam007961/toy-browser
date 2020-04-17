@@ -33,7 +33,16 @@ TEST(TestStylesheetComparison, TestCompareSelector) {
 }
 
 TEST(TestStylesheetComparison, TestCompareDeclaration) {
-    
+   css::Declaration d0("margin", css::Length { 10, css::Unit::Px });
+   css::Declaration d1("color", css::Color { 18, 19, 20, 255 });
+   css::Declaration d2("text-align", "center"); 
+   css::Declaration d3("margin", css::Length { 10, css::Unit::Px });
+   css::Declaration d4("color", css::Color { 18, 19, 20, 255 });
+   css::Declaration d5("text-align", "center"); 
+
+   EXPECT_EQ(d0, d3);
+   EXPECT_EQ(d1, d4);
+   EXPECT_EQ(d2, d5);
 }
 
 TEST(TestStylesheetComparison, TestCompareRule) {

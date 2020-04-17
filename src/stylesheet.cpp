@@ -2,7 +2,7 @@
 #include <stylesheet-visitor.hpp>
 
 bool css::Color::operator==(const Color& other) const {
-    return r == other.r && g == other.g && b == other.g && a == other.a;
+    return r == other.r && g == other.g && b == other.b && a == other.a;
 }
 
 bool css::Selector::operator==(const Selector& other) const {
@@ -19,6 +19,9 @@ css::Specificity css::SimpleSelector::specificity() const {
 
     return { a, b, c };
 }
+css::SimpleSelector::SimpleSelector() {}
+css::SimpleSelector::SimpleSelector(const std::string& tag_name) : tag_name(tag_name) {}
+
 void css::SimpleSelector::accept(StylesheetVisitor& visitor) { visitor.visit(*this); }
 bool css::SimpleSelector::isEqual(const Selector& other) const {
     const auto& other_simple = static_cast<const SimpleSelector&>(other);

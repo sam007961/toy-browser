@@ -40,6 +40,8 @@ namespace css {
         std::optional<std::string> id;
         std::vector<std::string> classes;
 
+        SimpleSelector();
+        SimpleSelector(const std::string& tag_name);
         virtual Specificity specificity() const;
         virtual void accept(StylesheetVisitor& visitor);
         virtual bool isEqual(const Selector& other) const;
