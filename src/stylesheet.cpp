@@ -43,7 +43,11 @@ css::Rule::Rule(Rule&& rule) :
     selectors(std::move(rule.selectors)), declarations(rule.declarations) {}
 void css::Rule::accept(StylesheetVisitor& visitor) { visitor.visit(*this); }
 bool css::Rule::operator==(const Rule& other) const {
-    return selectors == other.selectors && declarations == other.declarations;
+    return std::equal(
+        selectors.begin(), selectors.end(),
+        other.selectors.begin(), other.selectors.end(), 
+        [](const auto& lhs,  const auto&  rhs) {return *lhs == *rhs; })
+    && declarations == other.declarations;
 }
 bool css::Rule::operator!=(const Rule& other) const {
     return !(*this == other);
