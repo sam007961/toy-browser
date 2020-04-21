@@ -13,6 +13,7 @@ set(Sources
     src/html-parser.cpp
     src/stylesheet.cpp
     src/css-parser.cpp
+    src/style.cpp
     src/dom-printer.cpp
 )
 

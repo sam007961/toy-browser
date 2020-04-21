@@ -4,8 +4,7 @@
 #include <optional>
 #include <memory>
 #include <variant>
-
-class StylesheetVisitor;
+#include <dom.hpp>
 
 namespace css {
 
@@ -24,13 +23,10 @@ namespace css {
     typedef std::variant<Keyword, Length, Color> Value;
     typedef std::tuple<int, int, int> Specificity;
 
-    struct StylesheetElement {
-        virtual void accept(StylesheetVisitor& visitor) = 0;
-    };
-
-    struct Selector : public StylesheetElement {
+    struct Selector {
         virtual Specificity specificity() const = 0;
         virtual bool isEqual(const Selector& other) const = 0;
+        virtual bool matches(const dom::ElementData& elem) const = 0;
         bool operator==(const Selector& other) const;
         bool operator!=(const Selector& other) const;
     };
@@ -43,21 +39,20 @@ namespace css {
         SimpleSelector();
         SimpleSelector(const std::string& tag_name);
         virtual Specificity specificity() const;
-        virtual void accept(StylesheetVisitor& visitor);
         virtual bool isEqual(const Selector& other) const;
+        virtual bool matches(const dom::ElementData& elem) const;
     };
 
-    struct Declaration : public StylesheetElement {
+    struct Declaration {
         std::string name;
         Value value;
 
         Declaration(std::string name, Value value);
-        virtual void accept(StylesheetVisitor& visitor);
         bool operator==(const Declaration& other) const;
         bool operator!=(const Declaration& other) const;
     };
 
-    struct Rule : StylesheetElement {
+    struct Rule {
         typedef std::unique_ptr<Selector> SelectorPtr;
 
         std::vector<SelectorPtr> selectors;
@@ -69,16 +64,14 @@ namespace css {
         Rule(Rule&& rule);
         Rule& operator=(Rule&& rule);
 
-        virtual void accept(StylesheetVisitor& visitor);
         bool operator==(const Rule& other) const;
         bool operator!=(const Rule& other) const;
     };
 
-    struct Stylesheet : StylesheetElement {
+    struct Stylesheet {
         std::vector<Rule> rules;
         Stylesheet(std::vector<Rule>&& rules);
 
-        virtual void accept(StylesheetVisitor& visitor);
         bool operator==(const Stylesheet& other) const;
     };
 }

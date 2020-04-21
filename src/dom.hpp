@@ -1,7 +1,8 @@
 #pragma once
-#include <vector>
 #include <memory>
+#include <vector>
 #include <unordered_map>
+#include <unordered_set>
 #include <string>
 
 class DomVisitor;
@@ -44,6 +45,9 @@ namespace dom {
 		ElementData() {}
 		ElementData(const std::string& tag_name, const AttrMap& attributes);
 		bool operator==(const ElementData& other) const;
+
+		std::optional<std::string> id() const;
+		std::unordered_set<std::string> classes() const;
 	};
 
 	// Element node

@@ -1,6 +1,8 @@
 #include <dom.hpp>
 #include <dom-visitor.hpp>
 #include <typeinfo>
+#include <sstream>
+#include <iterator>
 
 dom::Node::Node() {}
 dom::Node::Node(std::vector<std::unique_ptr<Node>>&& children) :
@@ -25,6 +27,26 @@ dom::ElementData::ElementData(const std::string& tag_name, const AttrMap& attrib
 bool dom::ElementData::operator==(const ElementData& other) const {
 	return tag_name == other.tag_name
 		&& attributes == other.attributes;
+}
+std::optional<std::string> dom::ElementData::id() const {
+	auto idIt = attributes.find("id");
+	if(idIt == attributes.end()) {
+		return std::nullopt;
+	} else {
+		return idIt->second;
+	}
+}
+std::unordered_set<std::string> dom::ElementData::classes() const {
+	auto classesIt = attributes.find("classes");
+	if(classesIt == attributes.end()) {
+		return {};
+	} else {
+		auto classesIss = std::istringstream(classesIt->second);
+		return std::unordered_set<std::string>(
+			std::istream_iterator<std::string>(classesIss),
+			std::istream_iterator<std::string>()
+		);
+	}
 }
 
 dom::ElementNode::ElementNode(const std::string& name, const AttrMap& attrs,
