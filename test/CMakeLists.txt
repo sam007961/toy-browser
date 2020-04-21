@@ -5,6 +5,7 @@ set(Sources
     stylesheet-comparison-test.cpp
     html-parser-test.cpp
     css-parser-test.cpp
+    dom-element-node-test.cpp
 )
 
 add_executable(toy-browser-test ${Sources})

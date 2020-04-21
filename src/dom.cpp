@@ -37,7 +37,7 @@ std::optional<std::string> dom::ElementData::id() const {
 	}
 }
 std::unordered_set<std::string> dom::ElementData::classes() const {
-	auto classesIt = attributes.find("classes");
+	auto classesIt = attributes.find("class");
 	if(classesIt == attributes.end()) {
 		return {};
 	} else {
