@@ -10,7 +10,9 @@ void style::RuleMatcher::visit(dom::TextNode& textNode) {}
 
 void style::RuleMatcher::visit(dom::ElementNode& elemNode) {
     auto selIt = std::find_if(rule.selectors.begin(), rule.selectors.end(),
-        [elemNode](const css::Selector& sel) -> bool { return sel.matches(elemNode.data) ;});
+        [data = elemNode.data](const css::SelectorPtr& sel) -> bool {
+            return sel->matches(data);
+        });
 
     if(selIt != rule.selectors.end()) {
         matched = { (*selIt)->specificity(), &rule };

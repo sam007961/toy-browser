@@ -17,8 +17,8 @@ std::vector<css::Rule> CssParser::parse_rules() {
     return rules;
 }
 
-std::vector<CssParser::Selector> CssParser::parse_selectors() {
-    std::vector<Selector> selectors;
+std::vector<css::SelectorPtr> CssParser::parse_selectors() {
+    std::vector<css::SelectorPtr> selectors;
     while(!eof()) {
         selectors.push_back(parse_simple_selector());
         consume_whitespace();
@@ -58,7 +58,7 @@ css::Rule CssParser::parse_rule() {
     return css::Rule(std::move(selectors), declarations);
 }
 
-CssParser::Selector CssParser::parse_simple_selector() {
+css::SelectorPtr CssParser::parse_simple_selector() {
     auto selector = std::make_unique<css::SimpleSelector>();
     while(!eof()) {
         char c = next_char();

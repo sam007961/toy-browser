@@ -43,6 +43,8 @@ namespace css {
         virtual bool matches(const dom::ElementData& elem) const;
     };
 
+    typedef std::unique_ptr<Selector> SelectorPtr;
+
     struct Declaration {
         std::string name;
         Value value;
@@ -53,8 +55,6 @@ namespace css {
     };
 
     struct Rule {
-        typedef std::unique_ptr<Selector> SelectorPtr;
-
         std::vector<SelectorPtr> selectors;
         std::vector<Declaration> declarations;
 

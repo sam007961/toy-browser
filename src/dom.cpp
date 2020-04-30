@@ -6,7 +6,7 @@
 
 dom::Node::Node() {}
 
-dom::Node::Node(std::vector<std::unique_ptr<Node>>&& children) :
+dom::Node::Node(std::vector<NodePtr>&& children) :
 	children(std::move(children)) {}
 
 bool dom::Node::operator==(const Node& other) const {
@@ -19,7 +19,7 @@ bool dom::Node::operator!=(const Node& other) const {
 
 
 dom::TextNode::TextNode(const std::string& text,
-	std::vector<std::unique_ptr<Node>>&& children)
+	std::vector<NodePtr>&& children)
 		: text(text), Node(std::move(children)) {}
 
 void dom::TextNode::accept(DomVisitor& visitor) { visitor.visit(*this); }
@@ -61,7 +61,7 @@ std::unordered_set<std::string> dom::ElementData::classes() const {
 
 
 dom::ElementNode::ElementNode(const std::string& name, const AttrMap& attrs,
-	std::vector<std::unique_ptr<Node>>&& children) :
+	std::vector<NodePtr>&& children) :
 	data(name, attrs), Node(std::move(children)) {}	
 
 void dom::ElementNode::accept(DomVisitor& visitor) { visitor.visit(*this); }

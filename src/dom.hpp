@@ -8,13 +8,15 @@
 class DomVisitor;
 
 namespace dom {
+	struct Node;
+	typedef std::unique_ptr<Node> NodePtr;
 
 	// Node base class
 	struct Node {
 		// child nodes
-		std::vector<std::unique_ptr<Node>> children;
+		std::vector<NodePtr> children;
 		Node();
-		Node(std::vector<std::unique_ptr<Node>>&& children);
+		Node(std::vector<NodePtr>&& children);
 
 		virtual void accept(DomVisitor& visitor) = 0;
 		virtual bool isEqual(const Node& other) const = 0;
@@ -28,7 +30,7 @@ namespace dom {
 		std::string text;
 		TextNode() {}
 		TextNode(const std::string& text,
-			std::vector<std::unique_ptr<Node>>&& children = {});
+			std::vector<NodePtr>&& children = {});
 
 		virtual void accept(DomVisitor& visitor);
 		virtual bool isEqual(const Node& other) const;
@@ -55,7 +57,7 @@ namespace dom {
 		ElementData data;
 		ElementNode() {}
 		ElementNode(const std::string& name, const AttrMap& attrs = {},
-			std::vector<std::unique_ptr<Node>>&& children = {});
+			std::vector<NodePtr>&& children = {});
 
 		virtual void accept(DomVisitor& visitor);
 		virtual bool isEqual(const Node& other) const;

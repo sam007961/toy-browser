@@ -4,15 +4,12 @@
 
 class CssParser : public Parser<css::Stylesheet> {
 private:
-    typedef std::unique_ptr<css::Selector> Selector;
-
-private:
     std::vector<css::Rule> parse_rules();
-    std::vector<Selector> parse_selectors();
+    std::vector<css::SelectorPtr> parse_selectors();
     std::vector<css::Declaration> parse_declarations();
 
     css::Rule parse_rule(); 
-    Selector parse_simple_selector();
+    css::SelectorPtr parse_simple_selector();
     css::Declaration parse_declaration();
     std::string parse_identifier();
     css::Value parse_value();
