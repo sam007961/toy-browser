@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include <dom.hpp>
 
-TEST(DomElementNodeTest, TestId) {
+TEST(TestDomElementNode, TestId) {
     dom::ElementData d0("test", {
         {"abc", "123"},
         {"id", "test-id"}
@@ -10,7 +10,7 @@ TEST(DomElementNodeTest, TestId) {
     EXPECT_EQ(d0.id(), "test-id");
 }
 
-TEST(DomElementNodeTest, TestClasses) {
+TEST(TestDomElementNode, TestClasses) {
     dom::ElementData d0("test", {
         {"abc", "123"},
         {"class", "cls0 cls1 cls2"}

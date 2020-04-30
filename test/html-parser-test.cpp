@@ -1,19 +1,19 @@
 #include <gtest/gtest.h>
 #include <html-parser.hpp>
 
-TEST(HtmlParserTest, TestEmptyDocument) {
+TEST(TestHtmlParser, TestEmptyDocument) {
     HtmlParser parser("");
 
     EXPECT_TRUE(dom::compare(*parser.parse(), dom::ElementNode("html")));
 }
 
-TEST(HtmlParserTest, TestEmptyHtmlTag) {
+TEST(TestHtmlParser, TestEmptyHtmlTag) {
     HtmlParser parser("<html></html>");
 
     EXPECT_TRUE(dom::compare(*parser.parse(), dom::ElementNode("html")));
 }
 
-TEST(HtmlParserTest, TestSingleTextChild) {
+TEST(TestHtmlParser, TestSingleTextChild) {
     HtmlParser parser("<html>hello world!</html>");
     std::vector<std::unique_ptr<dom::Node>> children;
     children.push_back(std::make_unique<dom::TextNode>("hello world!"));
@@ -22,7 +22,7 @@ TEST(HtmlParserTest, TestSingleTextChild) {
         dom::ElementNode("html", dom::AttrMap(), std::move(children))));
 }
 
-TEST(HtmlParserTest, TestSingleElementChild) {
+TEST(TestHtmlParser, TestSingleElementChild) {
     HtmlParser parser("<html><div></div></html>");
     std::vector<std::unique_ptr<dom::Node>> children;    
     children.push_back(std::make_unique<dom::ElementNode>("div"));
@@ -31,7 +31,7 @@ TEST(HtmlParserTest, TestSingleElementChild) {
         dom::ElementNode("html", dom::AttrMap(), std::move(children))));
 }
 
-TEST(HtmlParserTest, TestMultipleChildren) {
+TEST(TestHtmlParser, TestMultipleChildren) {
     HtmlParser parser("<html><div></div><p></p></html>");
     std::vector<std::unique_ptr<dom::Node>> children;
     children.push_back(std::make_unique<dom::ElementNode>("div"));
@@ -41,7 +41,7 @@ TEST(HtmlParserTest, TestMultipleChildren) {
         dom::ElementNode("html", dom::AttrMap(), std::move(children))));
 }
 
-TEST(HtmlParserTest, TestThreeLayers) {
+TEST(TestHtmlParser, TestThreeLayers) {
     HtmlParser parser("<html><div><p></p></div></html>");
     std::vector<std::unique_ptr<dom::Node>> children;
     children.push_back(std::make_unique<dom::ElementNode>("p"));
@@ -53,7 +53,7 @@ TEST(HtmlParserTest, TestThreeLayers) {
 }
 
 
-TEST(HtmlParserTest, TestAttributes) {
+TEST(TestHtmlParser, TestAttributes) {
     HtmlParser parser("<html>\n<div id=\'simple-div\'>\n" 
         "<div id=\"nested-div\" class=\'background-red\'></div>" 
         "</div><p id=\'main-paragraph\'>Hello World!</p></html>");

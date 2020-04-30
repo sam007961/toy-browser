@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include <parser.hpp>
 
-TEST(TokenizerTest, TestCharIteration) {
+TEST(TestTokenizer, TestCharIteration) {
     Tokenizer t("1234");
 
     ASSERT_EQ(t.next_char(), '1');
@@ -15,7 +15,7 @@ TEST(TokenizerTest, TestCharIteration) {
     ASSERT_TRUE(t.eof());
 }
 
-TEST(TokenizerTest, TestStartsWith) {
+TEST(TestTokenizer, TestStartsWith) {
     Tokenizer t("abcd");
 
     ASSERT_TRUE(t.starts_with("a"));
@@ -36,14 +36,14 @@ TEST(TokenizerTest, TestStartsWith) {
     ASSERT_TRUE(t.starts_with("bcd"));
 }
 
-TEST(TokenizerTest, TestConsumeChars) {
+TEST(TestTokenizer, TestConsumeChars) {
     Tokenizer t("abcdef");
     ASSERT_EQ(t.consume_chars(1), "a");
     ASSERT_EQ(t.consume_chars(2), "bc");
     ASSERT_EQ(t.consume_chars(3), "def");
 }
 
-TEST(TokenizerTest, TestConsumeWhile) {
+TEST(TestTokenizer, TestConsumeWhile) {
     Tokenizer t("aaabcdEFG123h");
     ASSERT_EQ(t.consume_while([] (char c) -> bool { return c == 'a'; }), "aaa");
     ASSERT_EQ(t.consume_while([] (char c) -> bool { return 'a' <= c && c <= 'z'; }), "bcd");
@@ -52,7 +52,7 @@ TEST(TokenizerTest, TestConsumeWhile) {
     ASSERT_EQ(t.consume_char(), 'h');
 }
 
-TEST(TokenizerTest, TestConsumeWhitespace){
+TEST(TestTokenizer, TestConsumeWhitespace){
     Tokenizer t(" \na b  c   d    e\nf\n\ng\n\n\nh\n \n  i");
 
     t.consume_whitespace();

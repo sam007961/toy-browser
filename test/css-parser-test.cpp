@@ -1,13 +1,13 @@
 #include <gtest/gtest.h>
 #include <css-parser.hpp>
 
-TEST(CssParserTest, TestEmptyStylesheet) {
+TEST(TestCssParser, TestEmptyStylesheet) {
     CssParser parser("");
 
     EXPECT_EQ(parser.parse(), css::Stylesheet({}));    
 }
 
-TEST(CssParserTest, TestEmptyRule) {
+TEST(TestCssParser, TestEmptyRule) {
     CssParser parser("h3 { }");
     auto h3 = std::make_unique<css::SimpleSelector>("h3");
 
@@ -22,7 +22,7 @@ TEST(CssParserTest, TestEmptyRule) {
     EXPECT_EQ(parser.parse(), simple_stylesheet);
 }
 
-TEST(CssParserTest, TestSimpleRule) {
+TEST(TestCssParser, TestSimpleRule) {
     CssParser parser("h2, h3 { margin: 10px;\ncolor:#121314; text-align: center; }");
     auto h2 = std::make_unique<css::SimpleSelector>("h2");
     auto h3 = std::make_unique<css::SimpleSelector>("h3");
