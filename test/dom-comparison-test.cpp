@@ -60,21 +60,21 @@ TEST(TestDomComparison, TestCompareSingleElementNode) {
 }
 
 TEST(TestDomComparison, TestElementWithSingleChild) {
-    std::vector<std::unique_ptr<dom::Node>> e0_children;
+    std::vector<dom::NodePtr> e0_children;
     e0_children.push_back(std::make_unique<dom::TextNode>("hello world"));
     dom::ElementNode e0("x", {}, std::move(e0_children));
 
-    std::vector<std::unique_ptr<dom::Node>> e1_children;
+    std::vector<dom::NodePtr> e1_children;
     e1_children.push_back(std::make_unique<dom::TextNode>("world"));
     dom::ElementNode e1("x", {}, std::move(e1_children));
 
-    std::vector<std::unique_ptr<dom::Node>> e2_children;
+    std::vector<dom::NodePtr> e2_children;
     e2_children.push_back(std::make_unique<dom::TextNode>("hello world"));
     dom::ElementNode e2("y", {}, std::move(e2_children));
 
     dom::ElementNode e3("x");
 
-    std::vector<std::unique_ptr<dom::Node>> e4_children;
+    std::vector<dom::NodePtr> e4_children;
     e4_children.push_back(std::make_unique<dom::TextNode>("hello world"));
     dom::ElementNode e4("x", {}, std::move(e4_children));
 
@@ -90,41 +90,41 @@ TEST(TestDomComparison, TestElementWithSingleChild) {
 }
 
 TEST(TestDomComparison, TestCompareElementWithMultipleChildren) {
-    std::vector<std::unique_ptr<dom::Node>> e0_children;
+    std::vector<dom::NodePtr> e0_children;
     e0_children.push_back(std::make_unique<dom::TextNode>("hello world"));
     e0_children.push_back(std::make_unique<dom::TextNode>("bye world"));
     dom::ElementNode e0("x", {}, std::move(e0_children));
 
-    std::vector<std::unique_ptr<dom::Node>> e1_children;
+    std::vector<dom::NodePtr> e1_children;
     e1_children.push_back(std::make_unique<dom::TextNode>("bye world"));
     dom::ElementNode e1("x", {}, std::move(e1_children));
 
-    std::vector<std::unique_ptr<dom::Node>> e2_children;
+    std::vector<dom::NodePtr> e2_children;
     e2_children.push_back(std::make_unique<dom::TextNode>("hello world"));
     dom::ElementNode e2("x", {}, std::move(e2_children));
 
-    std::vector<std::unique_ptr<dom::Node>> e3_children;
+    std::vector<dom::NodePtr> e3_children;
     e3_children.push_back(std::make_unique<dom::TextNode>("hello"));
     e3_children.push_back(std::make_unique<dom::TextNode>("bye world"));
     dom::ElementNode e3("x", {}, std::move(e3_children));
 
-    std::vector<std::unique_ptr<dom::Node>> e4_children;
+    std::vector<dom::NodePtr> e4_children;
     e4_children.push_back(std::make_unique<dom::TextNode>("hello world"));
     e4_children.push_back(std::make_unique<dom::TextNode>("world"));
     dom::ElementNode e4("x", {}, std::move(e4_children));
 
-    std::vector<std::unique_ptr<dom::Node>> e5_children;
+    std::vector<dom::NodePtr> e5_children;
     e5_children.push_back(std::make_unique<dom::TextNode>("hello world"));
     e5_children.push_back(std::make_unique<dom::TextNode>("bye world"));
     dom::ElementNode e5("y", {}, std::move(e5_children));
 
-    std::vector<std::unique_ptr<dom::Node>> e6_children;
+    std::vector<dom::NodePtr> e6_children;
     e6_children.push_back(std::make_unique<dom::TextNode>("hello world"));
     e6_children.push_back(std::make_unique<dom::TextNode>("bye world"));
     e6_children.push_back(std::make_unique<dom::TextNode>("goodbye world"));
     dom::ElementNode e6("x", {}, std::move(e6_children));
     
-    std::vector<std::unique_ptr<dom::Node>> e7_children;
+    std::vector<dom::NodePtr> e7_children;
     e7_children.push_back(std::make_unique<dom::TextNode>("hello world"));
     e7_children.push_back(std::make_unique<dom::TextNode>("bye world"));
     dom::ElementNode e7("x", {}, std::move(e7_children));

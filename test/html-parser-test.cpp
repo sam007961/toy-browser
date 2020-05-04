@@ -15,7 +15,7 @@ TEST(TestHtmlParser, TestEmptyHtmlTag) {
 
 TEST(TestHtmlParser, TestSingleTextChild) {
     HtmlParser parser("<html>hello world!</html>");
-    std::vector<std::unique_ptr<dom::Node>> children;
+    std::vector<dom::NodePtr> children;
     children.push_back(std::make_unique<dom::TextNode>("hello world!"));
 
     EXPECT_TRUE(dom::compare(*parser.parse(),
@@ -24,7 +24,7 @@ TEST(TestHtmlParser, TestSingleTextChild) {
 
 TEST(TestHtmlParser, TestSingleElementChild) {
     HtmlParser parser("<html><div></div></html>");
-    std::vector<std::unique_ptr<dom::Node>> children;    
+    std::vector<dom::NodePtr> children;    
     children.push_back(std::make_unique<dom::ElementNode>("div"));
 
     EXPECT_TRUE(dom::compare(*parser.parse(),
@@ -33,7 +33,7 @@ TEST(TestHtmlParser, TestSingleElementChild) {
 
 TEST(TestHtmlParser, TestMultipleChildren) {
     HtmlParser parser("<html><div></div><p></p></html>");
-    std::vector<std::unique_ptr<dom::Node>> children;
+    std::vector<dom::NodePtr> children;
     children.push_back(std::make_unique<dom::ElementNode>("div"));
     children.push_back(std::make_unique<dom::ElementNode>("p"));
 
@@ -43,7 +43,7 @@ TEST(TestHtmlParser, TestMultipleChildren) {
 
 TEST(TestHtmlParser, TestThreeLayers) {
     HtmlParser parser("<html><div><p></p></div></html>");
-    std::vector<std::unique_ptr<dom::Node>> children;
+    std::vector<dom::NodePtr> children;
     children.push_back(std::make_unique<dom::ElementNode>("p"));
     auto div = std::make_unique<dom::ElementNode>("div", dom::AttrMap(), std::move(children));
     children.push_back(std::move(div));
@@ -57,7 +57,7 @@ TEST(TestHtmlParser, TestAttributes) {
     HtmlParser parser("<html>\n<div id=\'simple-div\'>\n" 
         "<div id=\"nested-div\" class=\'background-red\'></div>" 
         "</div><p id=\'main-paragraph\'>Hello World!</p></html>");
-    std::vector<std::unique_ptr<dom::Node>> children;
+    std::vector<dom::NodePtr> children;
     children.push_back(std::make_unique<dom::ElementNode>("div", dom::AttrMap {
         {"id", "nested-div"},
         {"class", "background-red"}

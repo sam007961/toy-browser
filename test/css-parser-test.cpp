@@ -34,7 +34,7 @@ TEST(TestCssParser, TestSimpleRule) {
         selectors.push_back(std::move(h2));
         selectors.push_back(std::move(h3));
     std::vector<css::Declaration> declarations { margin, color, text_align };
-    css::Rule rule(std::move(selectors), declarations);
+    css::Rule rule(selectors, declarations);
 
     std::vector<css::Rule> rules { rule };
     css::Stylesheet stylesheet(rules);

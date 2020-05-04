@@ -2,22 +2,21 @@
 #include <parser.hpp>
 #include <dom.hpp>
 
-class HtmlParser : public Parser<std::unique_ptr<dom::Node>> {
+class HtmlParser : public Parser<dom::NodePtr> {
 private:
-	typedef std::unique_ptr<dom::Node> Node;
 	typedef std::pair<std::string, std::string> Attribute;
 
 private:
 	std::string parse_tag_name();
-	Node parse_node();
-	Node parse_text();
-	Node parse_element();
+	dom::NodePtr parse_node();
+	dom::NodePtr parse_text();
+	dom::NodePtr parse_element();
 	Attribute parse_attr();
 	std::string parse_attr_value();
 	dom::AttrMap parse_attributes();
-	std::vector<Node> parse_nodes();
+	std::vector<dom::NodePtr> parse_nodes();
 
 public:
 	HtmlParser(const std::string& input);
-	virtual std::unique_ptr<dom::Node> parse();
+	virtual dom::NodePtr parse();
 };

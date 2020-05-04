@@ -62,8 +62,10 @@ namespace css {
         std::vector<Declaration> declarations;
 
         Rule();
+        Rule(const std::vector<SelectorPtr>& selectors,
+            const std::vector<Declaration>& declarations);
         Rule(std::vector<SelectorPtr>&& selectors,
-            std::vector<Declaration> declarations);
+            const std::vector<Declaration>& declarations);
         Rule(Rule&& rule);
         Rule(const Rule& rule);
         Rule& operator=(Rule&& rule);
@@ -74,6 +76,7 @@ namespace css {
 
     private:
         void copy_selectors(const Rule& rule);
+        void copy_selectors(const std::vector<SelectorPtr>& selectors);
     };
 
     struct Stylesheet {

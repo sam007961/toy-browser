@@ -14,7 +14,7 @@ std::string HtmlParser::parse_tag_name() {
 	);
 }
 
-HtmlParser::Node HtmlParser::parse_node() {
+dom::NodePtr HtmlParser::parse_node() {
 	switch (next_char()) {
 	case '<':
 		return parse_element();
@@ -23,13 +23,13 @@ HtmlParser::Node HtmlParser::parse_node() {
 	}
 }
 
-HtmlParser::Node HtmlParser::parse_text() {
+dom::NodePtr HtmlParser::parse_text() {
 	return std::make_unique<dom::TextNode>(consume_while(
 		[](char c) -> bool {return c != '<';}
 	));
 }
 
-HtmlParser::Node HtmlParser::parse_element() {
+dom::NodePtr HtmlParser::parse_element() {
 	// Opening tag
 	assert(consume_char() == '<');
 	auto tag_name = parse_tag_name();
@@ -73,8 +73,8 @@ dom::AttrMap HtmlParser::parse_attributes() {
 	return attributes;
 }
 
-std::vector<HtmlParser::Node> HtmlParser::parse_nodes() {
-	std::vector<Node> nodes;
+std::vector<dom::NodePtr> HtmlParser::parse_nodes() {
+	std::vector<dom::NodePtr> nodes;
 	for(consume_whitespace(); !eof() && !starts_with("</"); consume_whitespace()) {
 		nodes.push_back(parse_node());
 	}
@@ -82,11 +82,12 @@ std::vector<HtmlParser::Node> HtmlParser::parse_nodes() {
 }
 
 
-std::unique_ptr<dom::Node> HtmlParser::parse() {
+dom::NodePtr HtmlParser::parse() {
 	auto nodes = parse_nodes();
 	if (nodes.size() == 1) {
 		return std::move(nodes.back());
 	} else {
-		return std::make_unique<dom::ElementNode>("html", dom::AttrMap(), std::move(nodes));
+		return std::make_unique<dom::ElementNode>("html",
+			dom::AttrMap(), std::move(nodes));
 	}
 }

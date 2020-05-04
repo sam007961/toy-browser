@@ -70,8 +70,14 @@ bool css::Declaration::operator!=(const Declaration& other) const {
 
 css::Rule::Rule() {}
 
+css::Rule::Rule(const std::vector<SelectorPtr>& selectors,
+            const std::vector<Declaration>& declarations) :
+            declarations(declarations) {
+    copy_selectors(selectors);
+}
+
 css::Rule::Rule(std::vector<SelectorPtr>&& selectors,
-            std::vector<Declaration> declarations) :
+            const std::vector<Declaration>& declarations) :
             selectors(std::move(selectors)), declarations(declarations) {}
 
 css::Rule::Rule(Rule&& rule) : 
@@ -104,8 +110,12 @@ css::Rule& css::Rule::operator=(const Rule& other) {
 }
 
 void css::Rule::copy_selectors(const Rule& rule) {
-    for(auto it = rule.selectors.begin(); it != rule.selectors.end(); ++it) {
-        selectors.push_back(SelectorPtr((*it)->clone()));
+    copy_selectors(rule.selectors);
+}
+
+void css::Rule::copy_selectors(const std::vector<SelectorPtr>& selectors) {
+    for(auto it = selectors.begin(); it != selectors.end(); ++it) {
+        this->selectors.push_back(SelectorPtr((*it)->clone()));
     }
 }
 
