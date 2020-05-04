@@ -52,6 +52,10 @@ bool css::SimpleSelector::matches(const dom::ElementData& elem) const {
     return true;
 }
 
+css::Selector* css::SimpleSelector::clone() const {
+    return new SimpleSelector(*this);
+}
+
 
 css::Declaration::Declaration(std::string name, Value value) : name(name), value(value) {}
 
@@ -73,6 +77,38 @@ css::Rule::Rule(std::vector<SelectorPtr>&& selectors,
 css::Rule::Rule(Rule&& rule) : 
     selectors(std::move(rule.selectors)), declarations(rule.declarations) {}
 
+css::Rule::Rule(const Rule& rule) :
+    declarations(rule.declarations) {
+    copy_selectors(rule);
+}
+
+
+
+css::Rule& css::Rule::operator=(Rule&& other) {
+    declarations.clear();
+    std::move(other.declarations.begin(), other.declarations.end(),
+        std::back_inserter(declarations));
+    
+    selectors.clear();
+    std::move(other.selectors.begin(), other.selectors.end(),
+        std::back_inserter(selectors));
+
+    return *this;
+}
+
+css::Rule& css::Rule::operator=(const Rule& other) {
+    declarations = other.declarations;
+    copy_selectors(other);
+
+    return *this;
+}
+
+void css::Rule::copy_selectors(const Rule& rule) {
+    for(auto it = rule.selectors.begin(); it != rule.selectors.end(); ++it) {
+        selectors.push_back(SelectorPtr((*it)->clone()));
+    }
+}
+
 bool css::Rule::operator==(const Rule& other) const {
     return std::equal(
         selectors.begin(), selectors.end(),
@@ -86,6 +122,7 @@ bool css::Rule::operator!=(const Rule& other) const {
 }
 
 
+css::Stylesheet::Stylesheet(const std::vector<Rule>& rules) : rules(rules) {}
 css::Stylesheet::Stylesheet(std::vector<Rule>&& rules) : rules(std::move(rules)) {}
 
 bool css::Stylesheet::operator==(const Stylesheet& other) const {

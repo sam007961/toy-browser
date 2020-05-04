@@ -29,6 +29,7 @@ namespace css {
         virtual bool matches(const dom::ElementData& elem) const = 0;
         bool operator==(const Selector& other) const;
         bool operator!=(const Selector& other) const;
+        virtual Selector* clone() const = 0;
     };
 
     struct SimpleSelector : public Selector {
@@ -41,7 +42,9 @@ namespace css {
         virtual Specificity specificity() const;
         virtual bool isEqual(const Selector& other) const;
         virtual bool matches(const dom::ElementData& elem) const;
+        virtual Selector* clone() const;
     };
+
 
     typedef std::unique_ptr<Selector> SelectorPtr;
 
@@ -62,14 +65,20 @@ namespace css {
         Rule(std::vector<SelectorPtr>&& selectors,
             std::vector<Declaration> declarations);
         Rule(Rule&& rule);
+        Rule(const Rule& rule);
         Rule& operator=(Rule&& rule);
+        Rule& operator=(const Rule& rule);
 
         bool operator==(const Rule& other) const;
         bool operator!=(const Rule& other) const;
+
+    private:
+        void copy_selectors(const Rule& rule);
     };
 
     struct Stylesheet {
         std::vector<Rule> rules;
+        Stylesheet(const std::vector<Rule>& rules);
         Stylesheet(std::vector<Rule>&& rules);
 
         bool operator==(const Stylesheet& other) const;

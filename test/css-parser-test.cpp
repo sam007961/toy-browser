@@ -11,13 +11,12 @@ TEST(TestCssParser, TestEmptyRule) {
     CssParser parser("h3 { }");
     auto h3 = std::make_unique<css::SimpleSelector>("h3");
 
-    std::vector<std::unique_ptr<css::Selector>> selectors;
-    selectors.push_back(std::move(h3));
+    std::vector<css::SelectorPtr> selectors;
+        selectors.push_back(std::move(h3));
     css::Rule simple_rule(std::move(selectors), {});
 
-    std::vector<css::Rule> rules;
-    rules.push_back(std::move(simple_rule));
-    css::Stylesheet simple_stylesheet(std::move(rules));
+    std::vector<css::Rule> rules { simple_rule };
+    css::Stylesheet simple_stylesheet(rules);
 
     EXPECT_EQ(parser.parse(), simple_stylesheet);
 }
@@ -31,16 +30,17 @@ TEST(TestCssParser, TestSimpleRule) {
     css::Declaration color("color", css::Color { 18, 19, 20, 255 });
     css::Declaration text_align("text-align", "center");
 
-    std::vector<std::unique_ptr<css::Selector>> selectors;
+    std::vector<css::SelectorPtr> selectors;
+        selectors.push_back(std::move(h2));
+        selectors.push_back(std::move(h3));
     std::vector<css::Declaration> declarations { margin, color, text_align };
-    selectors.push_back(std::move(h2));
-    selectors.push_back(std::move(h3));
     css::Rule rule(std::move(selectors), declarations);
 
-    std::vector<css::Rule> rules;
-    rules.push_back(std::move(rule));
-    css::Stylesheet stylesheet(std::move(rules));
+    std::vector<css::Rule> rules { rule };
+    css::Stylesheet stylesheet(rules);
 
     // auto temp = parser.parse();
     EXPECT_EQ(parser.parse(), stylesheet);
 }
+
+// TODO: test selector specificty ordering in rule
