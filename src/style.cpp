@@ -51,9 +51,8 @@ style::PropertyMap style::StyleTreeBuilder::specified_values(
     return values;
 }
 
-style::StyleTreeBuilder::StyleTreeBuilder(
-    dom::Node& root, const css::Stylesheet& stylehseet) 
-        : root(root), stylesheet(stylesheet) {}
+style::StyleTreeBuilder::StyleTreeBuilder(const css::Stylesheet& stylesheet)
+    : stylesheet(stylesheet) {}
 
 void style::StyleTreeBuilder::visit(dom::TextNode& textNode) {}
 
@@ -62,10 +61,10 @@ void style::StyleTreeBuilder::visit(dom::ElementNode& elemNode) {
     result.specifed_values = specified_values(elemNode.data, stylesheet);
 }
 
-style::StyledNode style::StyleTreeBuilder::build() {
+style::StyledNode style::StyleTreeBuilder::build(dom::Node& root) {
     root.accept(*this);
     for(auto it = root.children.begin(); it != root.children.end(); ++it) {
-        result.children.push_back(StyleTreeBuilder(*it->get(), stylesheet).build());
+        result.children.push_back(StyleTreeBuilder(stylesheet).build(*it->get()));
     }
     return std::move(result);
 }

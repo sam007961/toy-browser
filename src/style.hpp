@@ -31,12 +31,11 @@ namespace style {
     public:
         virtual void visit(dom::TextNode& textNode);
         virtual void visit(dom::ElementNode& elemNode);
-        StyleTreeBuilder(dom::Node& root, const css::Stylesheet& stylehsheet);
-        StyledNode build();
+        StyleTreeBuilder(const css::Stylesheet& stylesheet);
+        StyledNode build(dom::Node& root);
     
     private:
-        dom::Node& root;
-        const css::Stylesheet& stylesheet;
         StyledNode result;
+        const css::Stylesheet& stylesheet;
     };
 }
