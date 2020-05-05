@@ -14,21 +14,29 @@ namespace style {
         std::vector<StyledNode> children;
     };
 
-    class RuleMatcher : public DomVisitor {
-    public:
-        virtual void visit(dom::TextNode& textNode);
-        virtual void visit(dom::ElementNode& elementNode);
-
-    public:
-        RuleMatcher(const css::Rule& rule);
-        std::optional<MatchedRule> match(dom::Node& node);
-    
-    private:
-        const css::Rule& rule;
-        std::optional<MatchedRule> matched;
-    };
+    // returns a MatchedRule if the element matches the rule, otherwise nullopt
+    std::optional<MatchedRule> match_rule(const dom::ElementData& elem,
+        const css::Rule& rule);
 
     class StyleTreeBuilder : public DomVisitor {
+    private:
+        // find the rules that match this element
+        std::vector<MatchedRule> matching_rules(const dom::ElementData& elem,
+            const css::Stylesheet& stylesheet);
+
+        // get the property values that apply to this element
+        PropertyMap specified_values(const dom::ElementData& elem,
+                const css::Stylesheet& stylesheet);
         
+    public:
+        virtual void visit(dom::TextNode& textNode);
+        virtual void visit(dom::ElementNode& elemNode);
+        StyleTreeBuilder(dom::Node& root, const css::Stylesheet& stylehsheet);
+        StyledNode build();
+    
+    private:
+        dom::Node& root;
+        const css::Stylesheet& stylesheet;
+        StyledNode result;
     };
 }

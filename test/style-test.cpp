@@ -3,15 +3,6 @@
 #include <style.hpp>
 using ils = std::initializer_list<std::string>;
 
-TEST(TestRuleMatcher, TestTextNode) {
-    dom::TextNode textNode("test");
-
-    css::Rule dummy;
-    auto match = style::RuleMatcher(dummy).match(textNode);
-
-    ASSERT_FALSE(match);
-}
-
 TEST(TestRuleMatcher, TestSimpleSelector) {
     dom::ElementNode h2("h2");
 
@@ -19,7 +10,7 @@ TEST(TestRuleMatcher, TestSimpleSelector) {
     selectors.push_back(std::make_unique<css::SimpleSelector>("h2"));
 
     css::Rule tagRule(std::move(selectors), {});
-    auto match = style::RuleMatcher(tagRule).match(h2);
+    auto match = style::match_rule(h2.data, tagRule);
 
     ASSERT_TRUE(match);
     css::Specificity spec; css::Rule rule;
@@ -48,7 +39,7 @@ TEST(TestRuleMatcher, TestMultipleSelectors) {
     });
 
     css::Rule multiRule(std::move(selectors), {});
-    auto match = style::RuleMatcher(multiRule).match(h2);
+    auto match = style::match_rule(h2.data, multiRule);
 
     ASSERT_TRUE(match);
     css::Specificity spec; css::Rule rule;
