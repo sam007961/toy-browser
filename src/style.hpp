@@ -6,7 +6,7 @@
 
 namespace style {
     typedef std::unordered_map<std::string, css::Value> PropertyMap;
-    typedef std::pair<css::Specificity, const css::Rule*> MatchedRule;
+    typedef std::pair<css::Specificity, css::Rule> MatchedRule;
 
     struct StyledNode {
         dom::Node* node;

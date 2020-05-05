@@ -39,6 +39,8 @@ namespace css {
 
         SimpleSelector();
         SimpleSelector(const std::string& tag_name);
+        SimpleSelector(const std::vector<std::string>& classes);
+        SimpleSelector(const std::string& id, int dummy);
         virtual Specificity specificity() const;
         virtual bool isEqual(const Selector& other) const;
         virtual bool matches(const dom::ElementData& elem) const;

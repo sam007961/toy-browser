@@ -15,6 +15,7 @@ namespace dom {
 	struct Node {
 		// child nodes
 		std::vector<NodePtr> children;
+
 		Node();
 		Node(std::vector<NodePtr>&& children);
 

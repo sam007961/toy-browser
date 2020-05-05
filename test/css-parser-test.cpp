@@ -9,37 +9,35 @@ TEST(TestCssParser, TestEmptyStylesheet) {
 
 TEST(TestCssParser, TestEmptyRule) {
     CssParser parser("h3 { }");
-    auto h3 = std::make_unique<css::SimpleSelector>("h3");
 
     std::vector<css::SelectorPtr> selectors;
-        selectors.push_back(std::move(h3));
+        selectors.push_back(std::make_unique<css::SimpleSelector>("h3"));
     css::Rule simple_rule(std::move(selectors), {});
 
-    std::vector<css::Rule> rules { simple_rule };
-    css::Stylesheet simple_stylesheet(rules);
+    std::vector<css::Rule> rules;
+    rules.push_back(std::move(simple_rule));
+    css::Stylesheet simple_stylesheet(std::move(rules));
 
     EXPECT_EQ(parser.parse(), simple_stylesheet);
 }
 
 TEST(TestCssParser, TestSimpleRule) {
     CssParser parser("h2, h3 { margin: 10px;\ncolor:#121314; text-align: center; }");
-    auto h2 = std::make_unique<css::SimpleSelector>("h2");
-    auto h3 = std::make_unique<css::SimpleSelector>("h3");
-
-    css::Declaration margin("margin", css::Length { 10, css::Unit::Px });
-    css::Declaration color("color", css::Color { 18, 19, 20, 255 });
-    css::Declaration text_align("text-align", "center");
-
     std::vector<css::SelectorPtr> selectors;
-        selectors.push_back(std::move(h2));
-        selectors.push_back(std::move(h3));
-    std::vector<css::Declaration> declarations { margin, color, text_align };
-    css::Rule rule(selectors, declarations);
+        selectors.push_back(std::make_unique<css::SimpleSelector>("h2"));
+        selectors.push_back(std::make_unique<css::SimpleSelector>("h3"));
 
-    std::vector<css::Rule> rules { rule };
-    css::Stylesheet stylesheet(rules);
+    std::vector<css::Declaration> declarations {
+        css::Declaration("margin", css::Length { 10, css::Unit::Px }),
+        css::Declaration("color", css::Color { 18, 19, 20, 255 }),
+        css::Declaration("text-align", "center")
+    };
+    css::Rule rule(std::move(selectors), declarations);
 
-    // auto temp = parser.parse();
+    std::vector<css::Rule> rules;
+    rules.push_back(std::move(rule)); 
+    css::Stylesheet stylesheet(std::move(rules));
+
     EXPECT_EQ(parser.parse(), stylesheet);
 }
 

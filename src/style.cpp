@@ -15,7 +15,7 @@ void style::RuleMatcher::visit(dom::ElementNode& elemNode) {
         });
 
     if(selIt != rule.selectors.end()) {
-        matched = { (*selIt)->specificity(), &rule };
+        matched = { (*selIt)->specificity(), rule };
     }
 }
 

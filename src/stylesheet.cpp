@@ -25,7 +25,14 @@ css::Specificity css::SimpleSelector::specificity() const {
 
 css::SimpleSelector::SimpleSelector() {}
 
-css::SimpleSelector::SimpleSelector(const std::string& tag_name) : tag_name(tag_name) {}
+css::SimpleSelector::SimpleSelector(const std::string& tag_name)
+    : tag_name(tag_name) {}
+
+css::SimpleSelector::SimpleSelector(const std::vector<std::string>& classes)
+    : classes(classes) {}
+
+css::SimpleSelector::SimpleSelector(const std::string& id, int dummy)
+    : id(id) {}
 
 bool css::SimpleSelector::isEqual(const Selector& other) const {
     const auto& other_simple = static_cast<const SimpleSelector&>(other);
@@ -104,6 +111,7 @@ css::Rule& css::Rule::operator=(Rule&& other) {
 
 css::Rule& css::Rule::operator=(const Rule& other) {
     declarations = other.declarations;
+    selectors.clear();
     copy_selectors(other);
 
     return *this;
