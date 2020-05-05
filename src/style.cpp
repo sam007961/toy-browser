@@ -41,6 +41,7 @@ style::PropertyMap style::StyleTreeBuilder::specified_values(
             return a.first < b.first;
         });
 
+    // collect the properties of the matched rules
     for(auto it = rules.begin(); it != rules.end(); ++it) {
         const auto& rule = it->second;
         for(auto decl : rule.declarations) {
