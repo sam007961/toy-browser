@@ -1,15 +1,13 @@
 #include <gtest/gtest.h>
 #include <dom.hpp>
 #include <style.hpp>
+#include <css-parser.hpp>
 using ils = std::initializer_list<std::string>;
 
 TEST(TestRuleMatcher, TestSimpleSelector) {
     dom::ElementNode h2("h2");
 
-    std::vector<css::SelectorPtr> selectors;
-    selectors.push_back(std::make_unique<css::SimpleSelector>("h2"));
-
-    css::Rule tagRule(std::move(selectors), {});
+    auto tagRule = CssParser("h2 { }").parse_rule();
     auto match = style::match_rule(h2.data, tagRule);
 
     ASSERT_TRUE(match);
@@ -26,19 +24,7 @@ TEST(TestRuleMatcher, TestMultipleSelectors) {
         { "class", "c0 c1 c2" }
     });
 
-    std::vector<css::SelectorPtr> selectors;
-        selectors.push_back(
-            std::make_unique<css::SimpleSelector>("h2"));
-        selectors.push_back(
-            std::make_unique<css::SimpleSelector>(ils { "c2" }));
-        selectors.push_back(
-            std::make_unique<css::SimpleSelector>(ils { "c0", "c1" }));
-    std::sort(selectors.begin(), selectors.end(),
-        [](const auto& a, const auto& b) -> bool {
-            return b->specificity() < a->specificity();
-    });
-
-    css::Rule multiRule(std::move(selectors), {});
+    auto multiRule = CssParser("h2, .c2, .c0.c1 { }").parse_rule();
     auto match = style::match_rule(h2.data, multiRule);
 
     ASSERT_TRUE(match);
@@ -48,4 +34,16 @@ TEST(TestRuleMatcher, TestMultipleSelectors) {
     css::Specificity expected { 0, 2, 0 };
     ASSERT_EQ(spec, expected);
     ASSERT_EQ(rule, multiRule);
+}
+
+TEST(TestStyleTreeBuilder, TestSingleNodeSingleRule) {
+    dom::ElementNode h2("h2");
+    auto stylesheet = CssParser("h2 { color: #FFFFFF; }").parse();
+
+    style::StyledNode expected;
+    expected.node = &h2;
+    expected.specifed_values["color"] = css::Color(255, 255, 255, 255);
+
+    auto styled = style::StyleTreeBuilder(stylesheet).build(h2);
+    ASSERT_EQ(styled, expected);
 }

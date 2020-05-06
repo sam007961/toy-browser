@@ -40,5 +40,3 @@ TEST(TestCssParser, TestSimpleRule) {
 
     EXPECT_EQ(parser.parse(), stylesheet);
 }
-
-// TODO: test selector specificty ordering in rule

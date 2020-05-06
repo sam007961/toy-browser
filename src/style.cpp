@@ -68,3 +68,7 @@ style::StyledNode style::StyleTreeBuilder::build(dom::Node& root) {
     }
     return std::move(result);
 }
+
+bool style::StyledNode::operator==(const StyledNode& other) const {
+    return node == other.node && specifed_values == other.specifed_values;
+}

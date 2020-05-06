@@ -5,6 +5,12 @@ bool css::Color::operator==(const Color& other) const {
     return r == other.r && g == other.g && b == other.b && a == other.a;
 }
 
+css::Color::Color(
+    unsigned char r,
+    unsigned char g,
+    unsigned char b,
+    unsigned char a) : r(r), g(g), b(b), a(a) {}
+
 
 bool css::Selector::operator==(const Selector& other) const {
     return typeid(*this) == typeid(other) && isEqual(other);

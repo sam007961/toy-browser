@@ -36,7 +36,7 @@ std::vector<css::SelectorPtr> CssParser::parse_selectors() {
 
     std::sort(selectors.begin(), selectors.end(), 
         [](const auto& a, const auto& b) -> bool {
-            return b->specificity() > a->specificity();
+            return b->specificity() < a->specificity();
     });
 
     return selectors;
@@ -118,7 +118,7 @@ css::Color CssParser::parse_color() {
     unsigned char r = parse_hex_pair();
     unsigned char g = parse_hex_pair();
     unsigned char b = parse_hex_pair();
-    return { r, g, b, 255 };
+    return { r, g, b, static_cast<unsigned char>(255) };
 }
 
 float CssParser::parse_float() {

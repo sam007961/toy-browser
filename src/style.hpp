@@ -12,7 +12,11 @@ namespace style {
         dom::Node* node;
         PropertyMap specifed_values;
         std::vector<StyledNode> children;
+
+        bool operator==(const StyledNode& other) const;
     };
+
+    bool compare_style_tree(const StyledNode& a, const StyledNode& b);
 
     // returns a MatchedRule if the element matches the rule, otherwise nullopt
     std::optional<MatchedRule> match_rule(const dom::ElementData& elem,
