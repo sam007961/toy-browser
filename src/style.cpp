@@ -4,6 +4,15 @@
 #include <stylesheet.hpp>
 
 
+bool style::compare(const StyledNode& a, const StyledNode& b) {
+    return a == b && std::equal(
+        a.children.begin(), a.children.end(),
+        b.children.begin(), b.children.end(),
+        [](const StyledNode& a, const StyledNode& b) -> bool {
+            return compare(a, b);
+        });
+}
+
 std::optional<style::MatchedRule> style::match_rule(const dom::ElementData& elem,
         const css::Rule& rule) {
     auto selIt = std::find_if(rule.selectors.begin(), rule.selectors.end(),
@@ -38,7 +47,7 @@ style::PropertyMap style::StyleTreeBuilder::specified_values(
     // sort rules by specificity, lowest to highest
     std::sort(rules.begin(), rules.end(),
         [](const MatchedRule& a, const MatchedRule& b) -> bool {
-            return a.first < b.first;
+            return b.first < a.first;
         });
 
     // collect the properties of the matched rules
@@ -54,7 +63,9 @@ style::PropertyMap style::StyleTreeBuilder::specified_values(
 style::StyleTreeBuilder::StyleTreeBuilder(const css::Stylesheet& stylesheet)
     : stylesheet(stylesheet) {}
 
-void style::StyleTreeBuilder::visit(dom::TextNode& textNode) {}
+void style::StyleTreeBuilder::visit(dom::TextNode& textNode) {
+    result.node = &textNode;
+}
 
 void style::StyleTreeBuilder::visit(dom::ElementNode& elemNode) {
     result.node = &elemNode;

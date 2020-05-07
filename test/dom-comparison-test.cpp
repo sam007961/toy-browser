@@ -131,6 +131,8 @@ TEST(TestDomComparison, TestCompareElementWithMultipleChildren) {
 
     EXPECT_TRUE(dom::compare(e0, e7));
     EXPECT_TRUE(dom::compare(e7, e0));
+    EXPECT_TRUE(dom::compare(e7, e7));
+    EXPECT_TRUE(dom::compare(e0, e0));
 
     EXPECT_FALSE(dom::compare(e0, e1));
     EXPECT_FALSE(dom::compare(e1, e0));
@@ -144,4 +146,41 @@ TEST(TestDomComparison, TestCompareElementWithMultipleChildren) {
     EXPECT_FALSE(dom::compare(e5, e0));
     EXPECT_FALSE(dom::compare(e0, e6));
     EXPECT_FALSE(dom::compare(e6, e0));
+}
+
+TEST(DomComparisonTest, TestThreeLayers) {
+    std::vector<dom::NodePtr> children;
+
+    children.push_back(std::make_unique<dom::ElementNode>("h3"));
+    auto h21 = std::make_unique<dom::ElementNode>("h2", dom::AttrMap(),
+        std::move(children));
+    children.push_back(std::move(h21));
+    auto h11 = dom::ElementNode("h1", {}, std::move(children));
+
+    children.push_back(std::make_unique<dom::ElementNode>("h3"));
+    auto h22 = std::make_unique<dom::ElementNode>("h2", dom::AttrMap(),
+        std::move(children));
+    children.push_back(std::move(h22));
+    auto h12 = dom::ElementNode("h1", {}, std::move(children));
+
+    children.push_back(std::make_unique<dom::ElementNode>("div"));
+    auto div1 = std::make_unique<dom::ElementNode>("div", dom::AttrMap(),
+        std::move(children));
+    auto div2 = dom::ElementNode("div", {}, std::move(children));
+
+    children.push_back(std::make_unique<dom::ElementNode>("div"));
+    auto h23 = std::make_unique<dom::ElementNode>("h2", dom::AttrMap(),
+        std::move(children));
+    children.push_back(std::move(h23));
+    auto h13 = dom::ElementNode("h1", {}, std::move(children));
+
+    EXPECT_TRUE(dom::compare(h11, h12));
+    EXPECT_TRUE(dom::compare(h12, h11));
+    EXPECT_TRUE(dom::compare(h11, h11));
+    EXPECT_TRUE(dom::compare(h12, h12));
+
+    EXPECT_FALSE(dom::compare(h11, div2));
+    EXPECT_FALSE(dom::compare(div2, h11));
+    EXPECT_FALSE(dom::compare(h11, h13));
+    EXPECT_FALSE(dom::compare(h13, h11));
 }
