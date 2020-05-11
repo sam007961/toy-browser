@@ -9,12 +9,12 @@ enable_testing()
 set(Sources
     src/main.cpp
     src/dom.cpp
-    src/parser.cpp
-    src/html-parser.cpp
     src/stylesheet.cpp
-    src/css-parser.cpp
     src/style.cpp
     src/layout.cpp
+    src/parser.cpp
+    src/html-parser.cpp
+    src/css-parser.cpp
     src/dom-printer.cpp
 )
 
