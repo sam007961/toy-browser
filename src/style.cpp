@@ -69,7 +69,7 @@ void style::StyleTreeBuilder::visit(dom::TextNode& textNode) {
 
 void style::StyleTreeBuilder::visit(dom::ElementNode& elemNode) {
     result.node = &elemNode;
-    result.specifed_values = specified_values(elemNode.data, stylesheet);
+    result.specified_values = specified_values(elemNode.data, stylesheet);
 }
 
 style::StyledNode style::StyleTreeBuilder::build(dom::Node& root) {
@@ -80,6 +80,29 @@ style::StyledNode style::StyleTreeBuilder::build(dom::Node& root) {
     return std::move(result);
 }
 
+std::optional<css::Value> style::StyledNode::value(const std::string& name) const {
+    if(auto it = specified_values.find(name); it != specified_values.end()) {
+        return it->second;
+    } else {
+        return std::nullopt;
+    }
+}
+
+css::Display style::StyledNode::display() const {
+    if(auto d = value("display")) {
+        auto disp = std::get<css::Keyword>(*d); 
+        if(disp == "block") {
+            return css::Display::Block;
+        } else if (disp == "none") {
+            return css::Display::None;
+        } else {
+            return css::Display::Inline;
+        }
+    } else {
+        return css::Display::Inline;
+    }
+}
+
 bool style::StyledNode::operator==(const StyledNode& other) const {
-    return node == other.node && specifed_values == other.specifed_values;
+    return node == other.node && specified_values == other.specified_values;
 }

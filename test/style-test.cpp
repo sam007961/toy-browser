@@ -43,7 +43,7 @@ TEST(TestStyleTreeBuilder, TestSingleNodeSingleRule) {
 
     style::StyledNode expected;
     expected.node = &h2;
-    expected.specifed_values["color"] = css::Color(255, 255, 255, 255);
+    expected.specified_values["color"] = css::Color(255, 255, 255, 255);
 
     auto style_tree = style::StyleTreeBuilder(stylesheet).build(h2);
     ASSERT_EQ(style_tree, expected);
@@ -75,34 +75,34 @@ TEST(TestStyleTreeBuilder, TestMultiNodeMultiRule) {
 
     style::StyledNode expected_h11;
     expected_h11.node = dom->children[0].get();
-    expected_h11.specifed_values["color"] = css::Color(255, 255, 255, 255);
+    expected_h11.specified_values["color"] = css::Color(255, 255, 255, 255);
 
     style::StyledNode expected_h11_text;
     expected_h11_text.node = dom->children[0]->children[0].get();
 
     style::StyledNode expected_h21;
     expected_h21.node = dom->children[1].get();
-    expected_h21.specifed_values["border"] = css::Length(2, css::Unit::Px);
-    expected_h21.specifed_values["border-color"] = css::Color(0, 0, 0, 255);
+    expected_h21.specified_values["border"] = css::Length(2, css::Unit::Px);
+    expected_h21.specified_values["border-color"] = css::Color(0, 0, 0, 255);
 
     style::StyledNode expected_h21_text;
     expected_h21_text.node = dom->children[1]->children[0].get();
 
     style::StyledNode expected_h22;
     expected_h22.node = dom->children[2].get();
-    expected_h22.specifed_values["border"] = css::Keyword("None");
-    expected_h22.specifed_values["border-color"] = css::Color(0, 0, 0, 255);
+    expected_h22.specified_values["border"] = css::Keyword("None");
+    expected_h22.specified_values["border-color"] = css::Color(0, 0, 0, 255);
 
     style::StyledNode expected_h22_text;
     expected_h22_text.node = dom->children[2]->children[0].get();
 
     style::StyledNode expected_div;
     expected_div.node = dom->children[3].get();
-    expected_div.specifed_values["color"] = css::Color(0, 0, 255, 255);
+    expected_div.specified_values["color"] = css::Color(0, 0, 255, 255);
 
     style::StyledNode expected_h12;
     expected_h12.node = dom->children[3]->children[0].get();
-    expected_h12.specifed_values["color"] = css::Color(255, 255, 255, 255);
+    expected_h12.specified_values["color"] = css::Color(255, 255, 255, 255);
 
     style::StyledNode expected_h12_text;
     expected_h12_text.node = dom->children[3]->children[0]->children[0].get();

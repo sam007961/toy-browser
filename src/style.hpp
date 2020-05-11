@@ -10,9 +10,11 @@ namespace style {
 
     struct StyledNode {
         dom::Node* node;
-        PropertyMap specifed_values;
+        PropertyMap specified_values;
         std::vector<StyledNode> children;
 
+        std::optional<css::Value> value(const std::string& name) const;
+        css::Display display() const;
         bool operator==(const StyledNode& other) const;
     };
 

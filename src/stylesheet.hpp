@@ -19,6 +19,12 @@ namespace css {
         bool operator==(const Color& other) const;
     };
 
+    enum Display {
+        Inline,
+        Block,
+        None
+    };
+
     typedef std::string Keyword;
     typedef std::pair<float, Unit> Length;
     typedef std::variant<Keyword, Length, Color> Value;

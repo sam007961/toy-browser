@@ -14,6 +14,7 @@ set(Sources
     src/stylesheet.cpp
     src/css-parser.cpp
     src/style.cpp
+    src/layout.cpp
     src/dom-printer.cpp
 )
 
