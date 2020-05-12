@@ -7,6 +7,7 @@ set(Sources
     css-parser-test.cpp
     dom-element-node-test.cpp
     style-test.cpp
+    layout-test.cpp
 )
 
 add_executable(toy-browser-test ${Sources})
