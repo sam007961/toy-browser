@@ -1,8 +1,6 @@
 #include <algorithm>
 #include <style.hpp>
 #include <dom.hpp>
-#include <stylesheet.hpp>
-
 
 bool style::compare(const StyledNode& a, const StyledNode& b) {
     return a == b && std::equal(
